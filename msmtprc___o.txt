@@ -1,0 +1,34 @@
+# After editing this, rename it as ~/.msmtprc 
+# Note the tilde and the dot: this goes into the home folder (~) as a hidden local config (file starting with .)
+
+# The install.sh installs msmtp, a simple app to send emails. This is the config file.
+# To use it, you need an email account. This is how to do it with Google.
+# Generate an app password from a google account.
+# You can do it only if you have 2-factor-authentication (2FA) on. 
+# Check if you have it and then go to:
+# https://myaccount.google.com/apppasswords
+# Give a name, it won't affect how the password works and you won't be asked that name again.
+# Save the password and keep in mind that if you close the page, you won't be able to see the password again.
+
+# IMPORTANT! This code doesn't take care of encryption and you write the email credentials 
+# here, so make sure that access to these lines is secure, or the email address doesn't 
+# contain sensitive information.
+
+
+# Set default values for all following accounts.
+defaults
+auth           on
+tls            on
+tls_trust_file /etc/ssl/certs/ca-certificates.crt
+logfile        ~/.msmtp.log
+
+# Gmail SMTP server configuration
+account        gmail
+host           smtp.gmail.com
+port           587
+from           your-email@gmail.com
+user           your-email@gmail.com
+password       your-app-password  # Remove the spaces if needed
+
+# Set a default account
+account default : gmail

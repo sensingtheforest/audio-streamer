@@ -1,0 +1,5 @@
+#Brovi E3372
+TargetVendor=0x3566
+TargetProductList="1506"
+HuaweiNewMode=1
+NoDriverLoading=1

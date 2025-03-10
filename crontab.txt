@@ -1,0 +1,33 @@
+# These are the cronjobs we use to keep the streamer happy 
+# Run "crontab -e" from terminal and copy this lines. If you don't use the battery sensor or the email log, delete those cronjobs.
+
+# The environment in which cron jobs run is more limited than your normal shell environment, and this line should solve the path resolution.
+# If you set the PATH variable in your crontab, it applies to all the commands and scripts executed by the cron job.
+export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+# By default, if a cron job generates any output (either to stdout or stderr), 
+# that output is emailed to the user who owns the crontab. 
+# If you set MAILTO to an empty string, it suppresses these emails.
+MAILTO=""
+
+# Health check every hour. Append states on uptime.log
+30 * * * * $HOME/Stream/monitor.sh
+
+# Write on the log the measurment from the battery sensor. 
+15,45 * * * * $HOME/Stream/venv/bin/python $HOME/Stream/battery.py
+
+# Send the log file at 8AM. If too many lines, then keep the last 50000.
+0 8 * * * $HOME/Stream/rotate-log.sh; sleep 5; $HOME/Stream/email-log.sh
+
+# At 3AM, check if darkice is streaming, if not reboot. 
+# Rebooting sends the log email so too often can be annoying... 
+0 3 * * * $HOME/Stream/nuclear-option.sh
+
+# Check the email and copy attachemets with the specified subject into the main folder. 
+# Then execute blank.sh which does nothing unless you uploaded a version of it with some commands.
+0 4 * * * $HOME/Stream/venv/bin/python $HOME/Stream/update-code.py; sleep 5; $HOME/Stream/blank.sh
+
+
+
+# DON'T RUN BOOT.SH FROM HERE! Use systemd instead or there will be trouble (see boot.service.txt for the systemd method).
+#@reboot $HOME/Stream/boot.sh

@@ -1,0 +1,28 @@
+# 1 - In the section service, edit user and the directories accordingly.
+# 2 - Rename this file boot.service and copy it in /etc/systemd/system/ 
+# OR sudo nano /etc/systemd/system/boot.service and copy and paste.
+# 3 - Change user name and directories accordingly.
+# 4 - Then run:
+# sudo systemctl daemon-reload
+# sudo systemctl enable boot.service (only the first time or if you change the filename after you enabled it)
+# 5 - Reboot
+# you can check if everything is ok with 'sudo systemctl status boot.service'
+
+[Unit]
+Description=Run boot.sh when the system is fully initialized
+# Network target means network capability is up but not necessary online, for that you need network-online.target
+# We are using only network because we want to log eventual network issues at boot.
+After=multi-user.target network.target
+
+[Service]
+Type=oneshot
+ExecStart=/home/stf/Stream/boot.sh
+User=stf
+WorkingDirectory=/home/stf/Stream
+StandardOutput=journal
+StandardError=journal
+# Without this, the stream doesn't start! I don't know why because the boot.sh should exec also without... 
+RemainAfterExit=true
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,10 @@
+auto lo
+iface lo inet loopback
+
+auto usb0
+iface usb0 inet static
+    address 192.168.225.39
+    netmask 255.255.255.0
+    gateway 192.168.225.1
+    dns-nameservers 8.8.8.8 8.8.4.4
+    metric 100
