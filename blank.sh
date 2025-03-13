@@ -13,12 +13,12 @@
 source "$(dirname "$(realpath "${BASH_SOURCE[0]}")")"/common.sh
 
 commands_script="$PROJECT_FOLDER/commands-tray.sh"
-blank_commands=$(cat commands-tray.sh)
+script_content=$(cat "$commands_script")
 
 # Check if commands-tray.sh exists and is not empty
 if [[ -f "$commands_script" && -s "$commands_script" ]]; then
     log "blank.sh - Executing $commands_script..."
-    log "$blank_commands"
+    log "$script_content"
     source "$commands_script"
     log "blank.sh Execution completed. Deleting $commands_script..."
     sudo rm -f "$commands_script"
