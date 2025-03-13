@@ -1,65 +1,58 @@
 #!/bin/bash 
 
-# This script is used to execute commands remotely when the streamer is connected to an internet dongle.
-# Internet dongles don't allow you to ssh with their public address, so this is a workaround.
-# The execution of this script is automated with crontab: after a new blank.sh is uploaded 
-# and called, all the commands between the markers are executed and deleted.
-# It works in conjunction with update-code.py: update-code.py checks a specified email address
-# and uploads the attachments of the email with a specified subject in the project folder of the rpi. 
-# If blank.sh is attached, the script is downloaded and then executed.
+# This script is used to execute commands remotely when the streamer is connected via an internet dongle.
+# It looks for a file called `commands-tray.sh` in the project folder and executes its content.
+# Internet dongles do not allow SSH access via their public IP address, so this serves as a workaround.
+# The execution of `blank.sh` is automated using crontab and works in conjunction with `update-code.py`.
+# Whenever the file `commands-tray.sh` is found in the project folder and `blank.sh` is triggered via crontab,
+# the commands within `commands-tray.sh` are executed, and the file is deleted afterward.
+# `update-code.py` checks a specified email address, downloads attachments with a specified subject,
+# and saves them in the project folder on the Raspberry Pi. If `commands-tray.sh` is attached, 
+# it is downloaded and then executed by `blank.sh`.
 
 source "$(dirname "$(realpath "${BASH_SOURCE[0]}")")"/common.sh
-SCRIPT="${BASH_SOURCE[0]}"
-TEMP_FILE=$(mktemp)
 
-# Get the lines between the markers
-blank_commands=$(sed -n '/^# ---from-here---/,/^# ---to-here---/ {/^# ---from-here---\|^# ---to-here---/d; /^[[:space:]]*$/d; p}' "$SCRIPT")
-# Check if there is something other than just whitespace (spaces, tabs, newlines)
-if [[ -n "$(echo "$blank_commands" | tr -d '[:space:]')" ]]; then
-    log "blank.sh - Executing commands..."
-    # Copy all the commands to be executed on the sys log
+commands_script="$PROJECT_FOLDER/commands-tray.sh"
+blank_commands=$(cat commands-tray.sh)
+
+# Check if commands-tray.sh exists and is not empty
+if [[ -f "$commands_script" && -s "$commands_script" ]]; then
+    log "blank.sh - Executing $commands_script..."
     log "$blank_commands"
+    source "$commands_script"
+    log "blank.sh Execution completed. Deleting $commands_script..."
+    sudo rm -f "$commands_script"
 else
-    log "blank.sh - There are no commands to execute."
-    exit 1
+    log "No commands to execute."
 fi
 
-# WRITE HERE THE COMMANDS TO BE EXECUTED ONCE AND THEN DELETED (DON'T DELETE THE MARKERS!)
-# ---from-here---
+# Reboot if the reboot flag is set
+if [[ -n "$reboot" && "$reboot" -eq 1 ]]; then
+    log "Rebooting now..."
+    sudo reboot
+fi
 
 
+#######################################
+# NOTES FOR CREATING commands-tray.sh #
+#######################################
 
-
-
-# ---to-here---
-
-# You can't use 'sudo reboot' normally to reboot or the remaining code won't run and commands won't be deleted. 
-# To reboot after the commands, write as last line:  
+# You can't use 'sudo reboot' normally to reboot in commands-tray.sh or these script won't finish.
+# To reboot the RPi with commands-tray.sh, write as last command:  
 # reboot=1
 
 # To add a new cronjob remotely:
 # crontab -l | { cat; echo "* * * * * echo 'ahahah' >> test.txt"; } | crontab -
 
 # To edit an existing cronjob:
-# crontab -l | sed '/something that is only in the line to change/c\* * * * * echo "uhuhuhu" >> test.txt' | crontab -
+# crontab -l | sed '/a word or pattern that's only in the line to replace/c\* * * * * I'm the new cronjob' | crontab -
+# E.g. if you want to change the time of "30 * * * * $HOME/Stream/monitor.sh":
+# crontab -l | sed '/monitor.sh/c\15 * * * * $HOME/Stream/monitor.sh' | crontab -
 
-
-log "blank.sh - Commands executed"
-
-# ${BASH_SOURCE[0]} is the bash cmd to get the name of the current file. $0 also works here but not when sourced from terminal.
-SCRIPT="${BASH_SOURCE[0]}"
-TEMP_FILE=$(mktemp)
-
-# Schedule replacement after the script finishes. If it's after sed without trap, this part gets lost.
-# After deleting the executed cmds, the script is copied to a new file, so we give exec privileges.
-if [[ -z $reboot || $reboot -eq 0 ]]; then
-    trap 'mv "$TEMP_FILE" "$SCRIPT"; sudo chmod 755 "$SCRIPT"' EXIT
-else
-    # Reboot too.
-    trap 'mv "$TEMP_FILE" "$SCRIPT"; sudo chmod 755 "$SCRIPT"; sudo reboot' EXIT
-fi
-
-# Use sed to remove content between the markers. Everything after this line won't be copied.
-# comma for range, | is the OR, \ avoids | to be literal. 
-# ^ means at the beginning of line, so the markers inside the first sed command don't mess up with this.
-sed '/^# ---from-here---/,/^# ---to-here---/ {/^# ---from-here---\|^# ---to-here---\|^[[:space:]]*$/!d}' "$SCRIPT" > "$TEMP_FILE"
+# Copy the entire content of crontab to a file called blah.txt in the home folder
+# crontab -l | cat >> blah.txt
+# Copy the content of crontab to the project's log file
+# crontab -l | cat >> "$(dirname "$(realpath "${BASH_SOURCE[0]}")")"/sys.log
+# OR you can source the project functions and global vars in commands-tray.sh
+# source "$(dirname "$(realpath "${BASH_SOURCE[0]}")")"/common.sh
+# crontab -l | cat >> "$PROJECT_FOLDER/sys.log"
