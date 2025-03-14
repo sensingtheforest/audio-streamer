@@ -23,7 +23,7 @@ IMAP_SERVER = "imap.gmail.com"
 EMAIL_ACCOUNT = "emailAccountToCheck"
 PASSWORD = "something that looks like rvyxabbebgnwtdei" # App password from Google
 PROJECT_DIR = Path(__file__).resolve().parent # Absolute path of the folder where this script is
-SEARCH_SUBJECT = "Update code - myProjectName"  # The subject to search for
+SEARCH_SUBJECT = "update code myProjectName"  # The subject to search for
 # -------------------------------------------
 
 
