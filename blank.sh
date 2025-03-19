@@ -11,24 +11,25 @@
 # it is downloaded and then executed by `blank.sh`.
 
 source "$(dirname "$(realpath "${BASH_SOURCE[0]}")")"/common.sh
+script_name=$(basename "${BASH_SOURCE[0]}")
 
 commands_script="$PROJECT_FOLDER/commands-tray.sh"
-script_content=$(cat "$commands_script")
 
-# Check if commands-tray.sh exists and is not empty
+# Check if commands-tray.sh exists and is not empty and execute its commands
 if [[ -f "$commands_script" && -s "$commands_script" ]]; then
-    log "blank.sh - Executing $commands_script..."
-    log "$script_content"
-    source "$commands_script"
-    log "blank.sh Execution completed. Deleting $commands_script..."
+    log "$script_name - Executing $commands_script..."
+    log "$(cat $commands_script)"
+    # Note bash instead of source: no inheritance from parent shell but it logs errors (stderr)
+    bash "$commands_script" 2>&1 | tee -a "$LOG_FILE"
+    log "$script_name - Execution completed. Deleting $commands_script..."
     sudo rm -f "$commands_script"
 else
-    log "No commands to execute."
+    log "$script_name - No commands to execute."
 fi
 
 # Reboot if the reboot flag is set
 if [[ -n "$reboot" && "$reboot" -eq 1 ]]; then
-    log "Rebooting now..."
+    log "$script_name - Rebooting now..."
     sudo reboot
 fi
 
@@ -37,22 +38,35 @@ fi
 # NOTES FOR CREATING commands-tray.sh #
 #######################################
 
-# You can't use 'sudo reboot' normally to reboot in commands-tray.sh or these script won't finish.
+# You can´t use ´sudo reboot´ normally to reboot in commands-tray.sh or these script won´t finish.
 # To reboot the RPi with commands-tray.sh, write as last command:  
 # reboot=1
 
-# To add a new cronjob remotely:
+# commands-tray.sh is executed with the bash command so think of it like typing on a new terminal session:
+# if you need the global variables from common.sh, you'll need to source again the script.
+# source "$(dirname "$(realpath "${BASH_SOURCE[0]}")")"/common.sh
+# echo $PROJECT_FOLDER
+
+# Change mic volume
+# amixer set MicBoost 60%
+
+# Add a new cronjob remotely:
 # crontab -l | { cat; echo "* * * * * echo 'ahahah' >> test.txt"; } | crontab -
 
-# To edit an existing cronjob:
+# Edit an existing cronjob:
 # crontab -l | sed '/a word or pattern that's only in the line to replace/c\* * * * * I'm the new cronjob' | crontab -
 # E.g. if you want to change the time of "30 * * * * $HOME/Stream/monitor.sh":
 # crontab -l | sed '/monitor.sh/c\15 * * * * $HOME/Stream/monitor.sh' | crontab -
 
 # Copy the entire content of crontab to a file called blah.txt in the home folder
 # crontab -l | cat >> blah.txt
-# Copy the content of crontab to the project's log file
+# Copy the content of crontab to the project´s log file
 # crontab -l | cat >> "$(dirname "$(realpath "${BASH_SOURCE[0]}")")"/sys.log
-# OR you can source the project functions and global vars in commands-tray.sh
+# OR you can source the project functions and global vars again in commands-tray.sh
 # source "$(dirname "$(realpath "${BASH_SOURCE[0]}")")"/common.sh
 # crontab -l | cat >> "$PROJECT_FOLDER/sys.log"
+
+# Send the sys.log to the email address next time blank.sh is executed.
+# ./send-email.sh
+# Send the battery.log to the email address next time blank.sh is executed.
+# ./send-email.sh -a $PROJECT_FOLDER/battery.log -s "STREAMER: Battery Log."
