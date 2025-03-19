@@ -16,9 +16,9 @@ After=multi-user.target network.target
 
 [Service]
 Type=oneshot
-ExecStart=/home/stf/Stream/boot.sh
-User=stf
-WorkingDirectory=/home/stf/Stream
+ExecStart=/home/yourUserName/audio-streamer/boot.sh
+User=yourUserName
+WorkingDirectory=/home/yourUserName/audio-streamer
 StandardOutput=journal
 StandardError=journal
 # Without this, the stream doesn't start! I don't know why because the boot.sh should exec also without... 
