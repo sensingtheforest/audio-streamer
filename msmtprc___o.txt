@@ -26,7 +26,7 @@ logfile        ~/.msmtp.log
 account        gmail
 host           smtp.gmail.com
 port           587
-from           your-email@gmail.com  # send-email.sh gets the email address from this line.
+from           your-email@gmail.com
 user           your-email@gmail.com
 password       your-app-password  # remove the spaces if needed
 
