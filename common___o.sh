@@ -10,14 +10,15 @@
 
 # Parameters---------------------------------
 
-# This gives you the absolute path of the folder where the file you're editing is located. 
+PROJECT_NAME="Streamer" # Used in the email's subject when receiving the log, etc.
+# This gives you the absolute path of the folder where common.sh is located. 
 PROJECT_FOLDER="$(dirname "$(realpath "${BASH_SOURCE[0]}")")" 
 AUDIO_FOLDER="$PROJECT_FOLDER/audio"
 LOG_FILE="$PROJECT_FOLDER/sys.log"
 VERBOSE=0  # If 1, all the log messages with a "v" at the end will also be written on the log.
 STATE_FILE="$PROJECT_FOLDER/state.txt"
 STREAM_SESSION_NAME="stream"
-RECORD=1 # Use solar crontab to record samples at specific hours of the day. Check solar-crontab.py to change the solar times and location.
+RECORD=1 # Use solar crontab to automate recordings. Check solar-crontab.py to change the solar times and location.
 RECORD_SESSION_NAME="record"
 RECORD_DURATION=300 # Duration of the automated recordings in seconds.
 # The Huawei brovi_e3372 needed some tricks. If you use that one and write it here, the code will set it up automatically. 
