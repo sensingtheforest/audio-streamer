@@ -3,6 +3,7 @@
 # This script monitors the state of the streambox and tries to solve the problems it finds.
 
 source "$(dirname "$(realpath "${BASH_SOURCE[0]}")")"/common.sh
+script_name=$(basename "${BASH_SOURCE[0]}")
 
 # While the streamer is booting, don't execute the monitoring script: useful if monitor is called with crontab.
 if [[ $(get_boot_state) -eq 1 ]]; then
@@ -37,7 +38,7 @@ if ! check_internet; then
                 get_new_usb0_ip
             fi
             if ! check_internet usb0; then
-                log "monitor.sh - ERROR: No internet on usb0 after systemctl restart networking -> Rebooting dongle..."
+                log "$script_name - ERROR: No internet on usb0 after systemctl restart networking -> Rebooting dongle..."
                 if [[ "$DONGLE_REBOOT" -eq 1 ]]
                     screen -mdS dongle $PROJECT_FOLDER/dongles/reboot-dongle.sh 
                     sleep 45
@@ -46,7 +47,7 @@ if ! check_internet; then
         fi
     else
         if ! connect_to_wifi; then
-            log "monitor.sh - ERROR: Unable to connect to any of the specified wi-fi networks."
+            log "$script_name - ERROR: Unable to connect to any of the specified wi-fi networks."
         fi
     fi
     # If the countermeasures worked, restart darkice to clean up... 
@@ -60,9 +61,9 @@ fi
 
 # When we deployed this streamer in the forest, with shaky network coverage, darkice sometimes stayed open but stuck. 
 # The function status_darkice only checks if the process is running, so here we check also DARKICE_STATE set from start_darkice().
-log "DARKICE_STATE = $(get_darkice_state), STREAMER_STATE = $(get_streamer_state)"
+log "$script_name - DARKICE_STATE=$(get_darkice_state), STREAMER_STATE=$(get_streamer_state)"
 if [[ ! status_darkice || $(get_darkice_state) -eq 0 ]]; then
-	log "monitor.sh - Darkice isn't streaming -> Kill and restart stream session and log audio device info."
+	log "$script_name - Darkice isn't streaming -> Kill and restart stream session and log audio device info."
 	# kill_stream is more aggressive than kill_darkice and closes also the screen session running darkice.
 	kill_stream
 	sleep 1
@@ -74,7 +75,7 @@ fi
 # If recording is on (RECORD=1 in common.sh), check if solar-crontab.py is running
 if [ "$RECORD" -eq 1 ]; then
 	if ! pgrep -f "solar-crontab.py" > /dev/null; then
-		log "monitor.sh - solar-crontab.py is not running -> Restarting session..."
+		log "$script_name - solar-crontab.py is not running -> Restarting session..."
 		screen -mdS $RECORD_SESSION_NAME python "$PROJECT_FOLDER/solar-crontab.py"
 	fi
 fi
