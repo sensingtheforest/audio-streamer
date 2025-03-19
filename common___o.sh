@@ -30,21 +30,13 @@ DONGLE_REBOOT=0
 # Any bad state will trigger countermeasures, but this is lighter than the monitor.sh, which is run from crontab at larger intervals.
 DARKICE_MONITOR_INTERVAL=60
 
-
-STREAM_MODE=1
-
-# 1 = wifi 
-
-# 2 = dongle with wifi window 
+### 1 = wifi
+### 2 = dongle with wifi window 
 # This mode expects a 4g dongle with a working SIM card. It tries to connect first to one of the specified networks such as a smartphone hotspot (with that you can edit the code in remote locations directly from the smartphone with Termius or similar apps). After 10 minutes (you can change the window with DONGLEMODE_WIFI_WINDOW), it will shut down the wifi capabilities of the Pi to save power. You'll have to turn it off and on again to reconnect to the wifi.
-
-# 3 = stream with whatever internet device is found first
-
-# 4 = dongle with greedy wifi
+### 3 = stream with whatever internet device is found first
+### 4 = dongle with greedy wifi
 # A beta mode that keeps searching for your specified hotspot or a wifi, and switch to that from the dongle as soon as it finds the wifi...
-
-# These routines are in stream.sh
-
+STREAM_MODE=1
 
 # Write here the names of the WiFi networks you plan to use and their passwords.
 WIFI_SSIDS=("mySmartphoneHotspot" "myLAN" "anotherWiFi")
