@@ -42,7 +42,7 @@ fi
 # NOTES FOR CREATING commands-tray.sh #
 #######################################
 
-# You can´t use ´sudo reboot´ normally to reboot in commands-tray.sh or these script won´t finish.
+# You can´t use ´sudo reboot´ normally to reboot in commands-tray.sh or this script won´t finish.
 # To reboot the RPi with commands-tray.sh, write as last command:  
 ## reboot=1
 
