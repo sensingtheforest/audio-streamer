@@ -52,7 +52,7 @@ fi
 # Add a new cronjob remotely:
 ## crontab -l | { cat; echo "* * * * * echo 'ahahah' >> test.txt"; } | crontab -
 
-# commands-tray.sh is executed with source so it inherits all the variables and functions from the prent script.
+# commands-tray.sh is executed with source so it inherits all the variables and functions from the parent script.
 # The var PROJECT_FOLDER and the log function are defined in common.sh 
 ## echo $PROJECT_FOLDER
 ## log $PROJECT_FOLDER
