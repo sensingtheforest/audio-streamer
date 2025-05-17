@@ -8,7 +8,34 @@
 # here, so make sure that access to these lines is secure, or access to the specified 
 # WiFis isn't a security risk.
 
-# Parameters---------------------------------
+
+# Mandatory Parameters---------------------------------
+
+STREAM_MODE=1
+
+### 1 = wifi
+
+### 2 = dongle with wifi window 
+# This mode expects a 4g dongle with a working SIM card. It tries to connect first to one of the specified networks 
+# such as a smartphone hotspot (with that you can edit the code in remote locations directly from the smartphone with Termius or similar apps). 
+# After 10 minutes (you can change the window below with DONGLEMODE_WIFI_WINDOW), it will shut down the wifi capabilities of the Pi to save power. 
+# You'll have to turn it off and on again to reconnect to the wifi.
+
+### 3 = stream with whatever internet device is found first
+
+### 4 = dongle with greedy wifi (BETA)
+# In this mode, the Raspberry Pi continuously searches at regular intervals for a specified Wi-Fi network or smartphone hotspot. 
+# The interval is defined by GREEDYWIFIMODE_INTERVAL, below in optional parameters. 
+# When it detects the target network, it automatically switches from the dongle to the Wi-Fi connection.
+
+# Write here the names of the WiFi networks you plan to use and their passwords.
+WIFI_SSIDS=("mySmartphoneHotspot" "myLAN" "anotherWiFi")
+WIFI_PWDS=("mySmartphoneHotspotPassword" "myLANPassword" "anotherWiFiPassword")
+
+#-----------------------------------------------------
+
+
+# Optional Parameters---------------------------------
 
 PROJECT_NAME="Streamer" # Used in the email's subject when receiving the log, etc.
 # This gives you the absolute path of the folder where common.sh is located. 
@@ -29,18 +56,6 @@ DONGLE_REBOOT=0
 # Interval for monitor_stream(). It checks if darkice is running, DARKICE state variable, and the dongle ip address when DONGLE isn't empty. 
 # Any bad state will trigger countermeasures, but this is lighter than the monitor.sh, which is run from crontab at larger intervals.
 DARKICE_MONITOR_INTERVAL=60
-
-### 1 = wifi
-### 2 = dongle with wifi window 
-# This mode expects a 4g dongle with a working SIM card. It tries to connect first to one of the specified networks such as a smartphone hotspot (with that you can edit the code in remote locations directly from the smartphone with Termius or similar apps). After 10 minutes (you can change the window with DONGLEMODE_WIFI_WINDOW), it will shut down the wifi capabilities of the Pi to save power. You'll have to turn it off and on again to reconnect to the wifi.
-### 3 = stream with whatever internet device is found first
-### 4 = dongle with greedy wifi
-# A beta mode that keeps searching for your specified hotspot or a wifi, and switch to that from the dongle as soon as it finds the wifi...
-STREAM_MODE=1
-
-# Write here the names of the WiFi networks you plan to use and their passwords.
-WIFI_SSIDS=("mySmartphoneHotspot" "myLAN" "anotherWiFi")
-WIFI_PWDS=("mySmartphoneHotspotPassword" "myLANPassword" "anotherWiFiPassword")
 
 # This is the time after reboot you'll have to change things with ssh before the wifi shuts down at hardwere level.
 # This is the most power efficient mode.
