@@ -34,6 +34,11 @@ sudo raspi-config -> Interface Options -> I2S
 ### Setup
 
 1. Download the project folder to your Raspberry Pi's home directory.
+   ```
+   sudo apt update
+   sudo apt install git
+   git clone https://github.com/sensingtheforest/audio-streamer.git
+   ```
 2. Configure settings:
     * Edit all files ending in "___o" with your settings (settings are commented inside each file).
     * Save them without "___o" (e.g., edit `common___o.sh` and save as `common.sh`).
