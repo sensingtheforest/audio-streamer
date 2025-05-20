@@ -14,9 +14,10 @@
 # When you're done editing, save the file as ~/.msmtprc
 # (Note: the tilde ~ means your home directory, and the dot makes it a hidden config file.)
 
-# IMPORTANT! This code doesn't take care of encryption and you write the email credentials 
-# here, so make sure that access to these lines is secure, or the email address doesn't 
-# contain sensitive information.
+# IMPORTANT: This setup does not handle encryption.
+# Your email credentials are stored in plain text here.
+# Make sure this file is properly secured, or use a non-sensitive email account.
+
 
 
 # Set default values for all following accounts.
