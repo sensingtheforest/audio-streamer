@@ -44,13 +44,17 @@ sudo raspi-config -> Interface Options -> I2S
     * Save them without "___o" (e.g., edit `common___o.sh` and save as `common.sh`).
     * **Note**: You can keep the originals, only those without `"___o"` will be used.
 3. Run the installer from the project folder:
-    ```
-    cd audio-streamer
-    ./install.sh
-    ```
-    * When prompted, configure Icecast (after the first prompt, you can use all the default settings or change passwords).
-    * Reboot when asked.
-    * **Note**: The script should install all required packages from the repositories. All the packages are listed in the script. There are some parameters at the beginning of install.sh you can set to spare some time, otherwise it will do a full OS upgrade and compile the latest darkice version. This may take a while - get a cup of tea... or two... 
+   ```
+   cd audio-streamer
+   ./install.sh
+   ```
+   * You might need to give the scripts execute permission. From the project folder:
+   ```
+   find . -type f \( -name "*.sh" -o -name "*.py" \) -exec chmod +x {} \;
+   ```
+   * When prompted, configure Icecast (after the first prompt, you can use all the default settings or change passwords).
+   * Reboot when asked.
+   * **Note**: The script should install all required packages from the repositories. All the packages are listed in the script. There are some parameters at the beginning of install.sh   you can set to spare some time, otherwise it will do a full OS upgrade and compile the latest darkice version. This may take a while - get a cup of tea... or two... 
 4. For MEMS microphones, install drivers:
     ```
     ./mems-drivers.sh
