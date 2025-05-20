@@ -21,11 +21,15 @@ solar_ratios = [0.0, 1.0, 1.9, 2.5]  # <---- CHANGE THESE RATIOS TO CHANGE THE S
 PROJECT_DIR = Path(__file__).resolve().parent  # Absolute path of the folder where this script is
 commands = [""] * len(solar_ratios)  # Initialize array with same length as solar_ratios
 
-# Define separate scripts for each solar event. 
+# Define separate bash scripts or python functions for each solar event.
 commands[0] = os.path.join(PROJECT_DIR, "record.sh") 
 commands[1] = os.path.join(PROJECT_DIR, "record.sh")  
 commands[2] = os.path.join(PROJECT_DIR, "record.sh") 
 commands[3] = os.path.join(PROJECT_DIR, "record.sh")  
+
+# If you need to use Python functions instead of shell scripts,
+# assign them like this (without parentheses or arguments):
+# commands[0] = myPythonFunction
 
 #################################################
 
@@ -44,12 +48,25 @@ def log_message(message):
         log.write(f"{current_time} - solar-crontab.py - {message}\n")
 
 
-# Execute a bash command
-def execute_bash(command):
-    if command is None or command.strip() == "":  # Check for None or empty string (even spaces)
-        log_message("Warning: Command is empty. Nothing will be executed.")
+def execute_command(command):
+    if command is None:
+        log_message("Warning: Command is None. Nothing will be executed.")
         return
-    os.system(command)
+
+    if isinstance(command, str):
+        if command.strip() == "":
+            log_message("Warning: Command is an empty string. Nothing will be executed.")
+        else:
+            os.system(command)
+            log_message(f"Executed bash command: {command}")
+    elif callable(command):
+        try:
+            command()
+            log_message("Executed Python function.")
+        except Exception as e:
+            log_message(f"Error executing Python function: {e}")
+    else:
+        log_message(f"Invalid command type: {type(command)}. Command must be a string or a callable.")
 
 
 # Get sunrise, solar noon, and sunset times
@@ -138,7 +155,7 @@ if __name__ == "__main__":
         log_message(f"Sleeping until next event in {next_event_delay} seconds")
         time.sleep(next_event_delay)
 
-        execute_bash(next_command)
+        execute_command(next_command)
         log_message(f"Executed command for ratio {next_ratio} at time {next_event_time.strftime('%H:%M:%S')}")
 
         # Sleep for a minute before recalculating to avoid duplicate runs
