@@ -45,6 +45,7 @@ sudo raspi-config -> Interface Options -> I2S
     * **Note**: You can keep the originals, only those without `"___o"` will be used.
 3. Run the installer from the project folder:
     ```
+    cd audio-streamer
     ./install.sh
     ```
     * When prompted, configure Icecast (after the first prompt, you can use all the default settings or change passwords).
