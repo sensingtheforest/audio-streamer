@@ -33,7 +33,7 @@ sudo raspi-config -> Interface Options -> I2S
 ```
 ### Setup
 
-1. Download the project folder to your Raspberry Pi's home directory.
+1. Download the project folder to your Raspberry Pi's home directory. From the home folder:
    ```
    sudo apt update
    sudo apt install git
