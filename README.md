@@ -48,7 +48,7 @@ sudo raspi-config -> Interface Options -> I2S
    cd audio-streamer
    ./install.sh
    ```
-   * You might need to give the scripts execute permission. From the project folder:
+   * Before running install.sh, you may need to grant execute permission to the scripts. From the project folder, run:
    ```
    find . -type f \( -name "*.sh" -o -name "*.py" \) -exec chmod +x {} \;
    ```
