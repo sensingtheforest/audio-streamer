@@ -53,7 +53,7 @@ sudo raspi-config -> Interface Options -> I2S
    find . -type f \( -name "*.sh" -o -name "*.py" \) -exec chmod +x {} \;
    ```
    * When prompted, configure Icecast (after the first prompt, you can use all the default settings or change passwords).
-   * Reboot when asked.
+   * Say yes to reboot — this is the final step of the installer. If you changed the kernel headers setting in installer.sh, the installer will finish without rebooting.
    * **Note**: The script should install all required packages from the repositories. All the packages are listed in the script. There are some parameters at the beginning of install.sh   you can set to spare some time, otherwise it will do a full OS upgrade and compile the latest darkice version. This may take a while - get a cup of tea... or two... 
 4. For MEMS microphones, install drivers:
     ```
