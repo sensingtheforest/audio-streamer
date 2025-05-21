@@ -1,31 +1,41 @@
 #!/bin/bash
 
-# Replace this with your sound device. 
-# Use "arecord -l" to check the name. If you see stuff in square brackets after the device name, don't incude it!
-# IMPORTANT: the default bitrate of asound.conf is 32 bit, good for most MEMS mics, but you really
-# need to get this one right according to your device or the audio quality will be bad. 
-# For the Rode AIMicro, write here "AIMicro" and change asound.conf from S32_LE to S24_3LE
-DEVICE="sndrpii2scard"
+# This script edits the asound.conf file in the project folder and copies it to /etc/, where it is required.
+# If you prefer to edit asound.conf manually, make sure to modify the one in /etc/ — changes to the local copy won't take effect.
 
-ALSAFILE="$(dirname "$(realpath "${BASH_SOURCE[0]}")")"/asound.conf
-MICTESTFILE="$(dirname "$(realpath "${BASH_SOURCE[0]}")")"/mic-test.wav
+# Replace DEVICE and FORMAT according to your sound device.
+# Use "arecord -l" to check the device name. If you see anything in square brackets after the name, don't include it!
+# IMPORTANT: The default format in asound.conf is S32_LE (32-bit little-endian), which works well for most MEMS microphones.
+# However, you must set this correctly for your specific device, or the audio quality will be poor.
+# Finding the exact format label can be tricky. If standard ones like S16_LE or S24_LE don't work,
+# you can install PipeWire and use its tools to detect the correct format.
+# For the RØDE AI-Micro, set DEVICE="AIMicro" and change the format in asound.conf from S32_LE to S24_3LE.
+
+DEVICE="AIMicro"
+FORMAT="S32_LE"
+
+# -----------------------------------------------------------------------
+
+ALSAFILE="$(dirname "$(realpath "${BASH_SOURCE[0]}")")/asound.conf"
+MICTESTFILE="$(dirname "$(realpath "${BASH_SOURCE[0]}")")/mic-test.wav"
 
 echo ""
 echo "CONFIGURE ALSA"
 
-# Copy asound.conf in the right folder
-if [ -f $ALSAFILE ]; then
-    if sudo cp $ALSAFILE /etc/; then
-		echo "asound.conf successfully copied to /etc/"
-	fi
-else	
-	echo "Error: File $ALSAFILE does not exist."
-	exit 1
+# Copy asound.conf to the correct system folder
+if [ -f "$ALSAFILE" ]; then
+    if sudo cp "$ALSAFILE" /etc/; then
+        echo "asound.conf successfully copied to /etc/"
+    fi
+else    
+    echo "Error: File $ALSAFILE does not exist."
+    exit 1
 fi
 
-# This line replaces the audio device name in the alsa config file with the one specified in the var MIC.
-# If you rerun this script it will work because asound.conf is copied again from the original file with the default dev name. 
+# Replace the default device name and format in asound.conf
+# This works even on repeated runs because the file is reset from the original each time
 sudo sed -i "s/sndrpii2scard/${DEVICE}/g" "/etc/asound.conf"
+sudo sed -i "s/S32_LE/${FORMAT}/g" "/etc/asound.conf"
 
 echo "Restart alsa-utils"
 sudo /etc/init.d/alsa-utils restart
