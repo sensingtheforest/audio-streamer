@@ -39,11 +39,7 @@ sudo raspi-config -> Interface Options -> I2S
    sudo apt install git
    git clone https://github.com/sensingtheforest/audio-streamer.git
    ```
-2. Configure settings:
-    * Edit all files ending in "___o" with your settings (settings are commented inside each file).
-    * Save them without "___o" (e.g., edit `common___o.sh` and save as `common.sh`).
-    * **Note**: You can keep the originals, only those without `"___o"` will be used.
-3. Run the installer from the project folder:
+2. Go to the project folder and run the install script:
    ```
    cd audio-streamer
    ./install.sh
@@ -55,30 +51,42 @@ sudo raspi-config -> Interface Options -> I2S
    * When prompted, say yes to configure Icecast2. After that, you can just use the default settings. If you change the default passwords, make sure to remember them — you’ll need them later for the Icecast2 config file. When prompted to configure msmtp (email app), and asked that confusing question, just go with the default no.
    * Say yes to reboot — this is the final step of the installer. If you changed the kernel headers setting in installer.sh, the installer will finish without rebooting.
    * **Note**: The script should install all required packages from the repositories. All the packages are listed in the script. There are some parameters at the beginning of install.sh   you can set to spare some time, otherwise it will do a full OS upgrade and compile the latest darkice version. This may take a while - get a cup of tea... or two... 
-4. For MEMS microphones, install drivers:
-    ```
-    ./mems-drivers.sh
-    ```
-    * Reboot when prompted (type `y`).
-    * **Note**: If not using MEMS microphones, skip to step 5. 
-5. Set up the microphone:
-    ```
-    ./mic-setup.sh
-    ```
-    * **Note**: This step assumes that you created correctly `mic-setup.sh` with your audio device info from the `___o file`.
-    * A 10-second recording test will start. You should see volume meters (or a vague memory of them) moving. Check for `mic-test.wav` in the project folder. 
+3. For MEMS microphones, install drivers:
+   ```
+   ./mems-drivers.sh
+   ```
+   * Reboot when prompted (type `y`).
+   * **Note**: If not using MEMS microphones, skip to step 4. 
+4. Set up the microphone:
+   * Open the setup script:
+   ```
+   sudo nano mic-setup___o.sh
+   ```
+   * Set DEVICE and BIT_DEPTH to match your microphone. You can find your device name running:
+   ```
+   arecord -l
+   ```
+   * Save the file as mic-setup.sh (remove "___o") and run it:
+   ```
+   ./mic-setup.sh
+   ```
+   * A 10-second recording test will start. You should see volume meters (or a vague memory of them) moving. Check for `mic-test.wav` in the project folder. 
+5. Configure settings:
+   * Edit all remaining files ending in "___o" with your settings (settings are commented inside each file).
+   * Save them without "___o" (e.g., edit `common___o.sh` and save as `common.sh`).
+   * **Note**: You can keep the originals, only those without `"___o"` will be used.
 6. Test the stream:
-    ```
-    ./stream.sh
-    ```
-    * If set up correctly, you should be able to access the stream via your Icecast2 server address.
-    * **Note**: This assumes that `darkice.cfg` has been set up correctly, there are no errors in the terminal, and the last line ends with `SCHED_FIFO`.
+   ```
+   ./stream.sh
+   ```
+   * If set up correctly, you should be able to access the stream via your Icecast2 server address.
+   * **Note**: This assumes that `darkice.cfg` has been set up correctly, there are no errors in the terminal, and the last line ends with `SCHED_FIFO`.
 7. Enable email operations:
-    * Follow instructions in `msmtprc.txt` to configure email account on the RPi.
+   * Follow instructions in `msmtprc.txt` to configure email account on the RPi.
 8. Set up cronjobs:
-    * Follow instructions in `crontab.txt`. 
+   * Follow instructions in `crontab.txt`. 
 9. Create boot service:
-    * See `boot.service.txt` for details on setting up the streamer to start at boot.
+   * See `boot.service.txt` for details on setting up the streamer to start at boot.
 10. ENJOY!
 
 ## Troubleshooting
