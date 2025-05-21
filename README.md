@@ -62,7 +62,7 @@ sudo raspi-config -> Interface Options -> I2S
    ```
    sudo nano mic-setup___o.sh
    ```
-   * Set DEVICE and BIT_DEPTH to match your microphone. You can find your device name running:
+   * Set DEVICE and FORMAT to match your microphone. You can find your device name running:
    ```
    arecord -l
    ```
@@ -70,7 +70,11 @@ sudo raspi-config -> Interface Options -> I2S
    ```
    ./mic-setup.sh
    ```
-   * A 10-second recording test will start. You should see volume meters (or a vague memory of them) moving. Check for `mic-test.wav` in the project folder. 
+   * A 10-second recording test should start. You should see volume meters (or a vague memory of them) moving. Check for `mic-test.wav` in the project folder.
+   * You can adjust the capture vulume in alsamixer. Make sure to select your sound card (click on "F6: Select your soundcard", then on "F5: All")
+     ```
+     alsamixer
+     ```
 5. Configure settings:
    * Edit all remaining files ending in "___o" with your settings (settings are commented inside each file).
    * Save them without "___o" (e.g., edit `common___o.sh` and save as `common.sh`).
