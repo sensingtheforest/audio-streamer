@@ -71,7 +71,7 @@ sudo raspi-config -> Interface Options -> I2S
    ./mic-setup.sh
    ```
    * A 10-second recording test should start. You should see volume meters (or a vague memory of them) moving. Check for `mic-test.wav` in the project folder.
-   * You can adjust the capture vulume in alsamixer. Make sure to select your sound card (click on "F6: Select your soundcard", then on "F5: All")
+   * You can adjust the mic capture volume in alsamixer. To see the fader, click on "F6: Select your soundcard", and then show all volume controls with "F5: All")
      ```
      alsamixer
      ```
