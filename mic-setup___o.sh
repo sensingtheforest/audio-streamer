@@ -9,12 +9,16 @@
 # However, you must set this correctly for your specific device, or the audio quality will be poor.
 # Finding the exact format label can be tricky. If standard ones like S16_LE or S24_LE don't work,
 # you can install PipeWire and use its tools to detect the correct format.
-# For the RØDE AI-Micro, set DEVICE="AIMicro" and change the format in asound.conf from S32_LE to S24_3LE.
 
 DEVICE="AIMicro"
-FORMAT="S32_LE"
+FORMAT="S24_3LE"
+
+# TESTED DEVICES
+# RØDE AI-Micro -> DEVICE="AIMicro", FORMAT="S24_3LE"
+# MEMS mics with AdaFruit drivers -> DEVICE="sndrpii2scard", FORMAT="S32_LE" 
 
 # -----------------------------------------------------------------------
+
 
 ALSAFILE="$(dirname "$(realpath "${BASH_SOURCE[0]}")")/asound.conf"
 MICTESTFILE="$(dirname "$(realpath "${BASH_SOURCE[0]}")")/mic-test.wav"
