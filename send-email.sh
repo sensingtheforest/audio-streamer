@@ -10,6 +10,10 @@
 # logs in the email from the RPi, or upload code and shell commands on the RPi.
 # Remember that you need to set up ~/.msmtprc config file for this to work...
 
+source "$(dirname "$(realpath "${BASH_SOURCE[0]}")")"/common.sh
+script_name=$(basename "${BASH_SOURCE[0]}")
+
+
 # Parameters---------------------------------
 
 # Get the email associated with the RPi in the $HOME/.msmtprc config file. Don't change this here.
@@ -21,34 +25,42 @@ EMAIL_TO="$EMAIL_FROM"
 # Content of the email
 EMAIL_BODY="Kindly brought to you by a very cool streamer!"
 
+# Default project name
+DEFAULT_SUBJECT="$PROJECT_NAME: Log File"
+DEFAULT_ATTACHMENT=$LOG_FILE  
+
 # -------------------------------------------
 
 
-source "$(dirname "$(realpath "${BASH_SOURCE[0]}")")"/common.sh
-script_name=$(basename "${BASH_SOURCE[0]}")
+EMAIL_SUBJECT=$DEFAULT_SUBJECT
+EMAIL_ATTACHMENTS=()
+ATTACHMENTS_CUSTOMIZED=false
 
-# Defaults if not passed as args.
-EMAIL_SUBJECT="$PROJECT_NAME: Log File"
-EMAIL_ATTACHMENT="$LOG_FILE"
-
-# Get the args (e.g. send-email.sh -a myAttachment -s "my subject") 
 while getopts ":a:s:" opt; do
   case ${opt} in
-    a) EMAIL_ATTACHMENT=$OPTARG;;
+    a)
+      if ! $ATTACHMENTS_CUSTOMIZED; then
+        EMAIL_ATTACHMENTS=()  # Clear default
+        ATTACHMENTS_CUSTOMIZED=true
+      fi
+      EMAIL_ATTACHMENTS+=("$OPTARG")
+      ;;
     s) EMAIL_SUBJECT=$OPTARG;;
-    \? ) log "$script_name - Invalid flag";;
+    \?) log "$script_name - Invalid flag";;
   esac
 done
 
 log "______________SEND EMAIL"
 
-# Check if the log file exists. The var $LOG_FILE is specified in common.sh
-if [ ! -f "$EMAIL_ATTACHMENT" ]; then
-  log "$script_name - $EMAIL_ATTACHMENT not found"
-  exit 1
-fi
+# Check all attachments
+for attachment in "${EMAIL_ATTACHMENTS[@]}"; do
+  if [ ! -f "$attachment" ]; then
+    log "$script_name - Attachment $attachment not found"
+    exit 1
+  fi
+done
 
-# Create the email content
+# Create the email with multiple attachments
 {
   echo "To: $EMAIL_TO"
   echo "From: $EMAIL_FROM"
@@ -61,13 +73,16 @@ fi
   echo "Content-Transfer-Encoding: 7bit"
   echo
   echo "$EMAIL_BODY"
-  echo
-  echo "--boundary42"
-  echo "Content-Type: text/plain"
-  echo "Content-Disposition: attachment; filename=\"$(basename "$EMAIL_ATTACHMENT")\""
-  echo "Content-Transfer-Encoding: base64"
-  echo
-  base64 "$EMAIL_ATTACHMENT"
-  echo "--boundary42--"
-} | msmtp --from="$EMAIL_FROM" "$EMAIL_TO" >> "$EMAIL_ATTACHMENT" 2>&1
+  
+  for attachment in "${EMAIL_ATTACHMENTS[@]}"; do
+    echo
+    echo "--boundary42"
+    echo "Content-Type: application/octet-stream"
+    echo "Content-Disposition: attachment; filename=\"$(basename "$attachment")\""
+    echo "Content-Transfer-Encoding: base64"
+    echo
+    base64 "$attachment"
+  done
 
+  echo "--boundary42--"
+} | msmtp --from="$EMAIL_FROM" "$EMAIL_TO" >> "$LOG_FILE" 2>&1
