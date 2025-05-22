@@ -13,6 +13,7 @@
 
 # When you're done editing, save the file as ~/.msmtprc
 # (Note: the tilde ~ means your home directory, and the dot makes it a hidden config file.)
+# Set permission with 'chmod 600 ~/.msmtprc'
 
 # IMPORTANT: This setup does not handle encryption.
 # Your email credentials are stored in plain text here.
