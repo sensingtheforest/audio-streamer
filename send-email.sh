@@ -5,6 +5,7 @@
 
 # Syntax: send-email.sh -a myAttachment -s "my subject" 
 # Args are optional. By default it sends the sys.log with "STREAMER: Log File" subject.
+# You can use multiple attachments: send-email.sh -a myAttachment1 -a myAttachment2 -s "my subject" 
 
 # The email address is used as a common repository for remote operations like receiving 
 # logs in the email from the RPi, or upload code and shell commands on the RPi.
