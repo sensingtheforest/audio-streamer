@@ -59,6 +59,11 @@ if check_internet 20 2; then
     screen -mdS $STREAM_SESSION_NAME $PROJECT_FOLDER/stream.sh
 fi
 
+# Create the audio folder if it doesn't already exist
+if [ ! -d "$AUDIO_FOLDER" ]; then
+  mkdir -p "$AUDIO_FOLDER"
+fi
+
 if [[ "$RECORD" -eq 1 ]]; then
 	source venv/bin/activate
 	screen -mdS $RECORD_SESSION_NAME python "$PROJECT_FOLDER/solar-crontab.py"
