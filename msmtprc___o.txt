@@ -1,24 +1,23 @@
 # The install.sh installs msmtp, a simple app to send emails. This is the config file.
-# To use it, you need an email account. This is how to do it with Gmail.
+# To use it, you need an email account. This is how to set it up with Gmail.
 
-# Generate an app password from a google account.
-# You can do it only if you have 2-factor-authentication (2FA) on. 
-# Check if you have it and then go to:
-# https://myaccount.google.com/apppasswords
-# Give a name, it won't affect how the password works and you won't be asked that name again.
-# Save the password and keep in mind that if you close the page, you won't be able to see the password again.
+# Step 1: Generate an app password from your Google account.
+# You can only do this if you have 2-factor-authentication (2FA) enabled.
+# Check if you have it, then go to: https://myaccount.google.com/apppasswords
+# Choose a name for the app password (any name — it doesn’t affect functionality).
+# IMPORTANT: Copy and save the password right away — you won’t be able to see it again after closing the page.
 
-# Enter your Gmail address in the 'from' and 'user' fields.
-# For 'password', use the app password you generated earlier.
+# Step 2: Enter your Gmail address in the 'from' and 'user' fields below.
+# For the 'password' field, use the app password you just generated (not your main Gmail password).
 
-# When you're done editing, save the file as ~/.msmtprc
-# (Note: the tilde ~ means your home directory, and the dot makes it a hidden config file.)
-# Set permission with 'chmod 600 ~/.msmtprc'
+# Step 3: Save this file as ~/.msmtprc
+# (Note: ~ means your home directory, and the dot makes it a hidden file.)
+# Then, secure the file so only you can read it:
+# Run: chmod 600 ~/.msmtprc
 
-# IMPORTANT: This setup does not handle encryption.
-# Your email credentials are stored in plain text here.
-# Make sure this file is properly secured, or use a non-sensitive email account.
-
+# IMPORTANT: This setup does not encrypt your credentials.
+# Your email address and app password are stored in plain text.
+# Use a dedicated or non-sensitive Gmail account if possible, and protect this file.
 
 
 # Set default values for all following accounts.
@@ -34,7 +33,7 @@ host           smtp.gmail.com
 port           587
 from           your-email@gmail.com
 user           your-email@gmail.com
-password       your-app-password  # remove the spaces if needed
+password       your-app-password  # paste the app password here (no spaces)
 
 # Set a default account
 account default : gmail
