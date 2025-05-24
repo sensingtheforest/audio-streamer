@@ -27,6 +27,7 @@ This code turns a Raspberry Pi into an online audio streamer. Some of its featur
 sudo raspi-config 
 ```
 Then navigate to Interface Options → I2C → Enable
+
 2. If using MEMS microphones, enable I2S by editing the config file:
 ```
 sudo nano /boot/firmware/config.txt
