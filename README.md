@@ -125,7 +125,7 @@ The following libraries and tools are required for the streamer and additional t
 ### Python Virtual Environment Packages  
 - [Astral](https://pypi.org/project/astral/) – Used to sync tasks to solar times instead of standard times via crontab. *(Tested with v3.2)*  
 - [IMAPClient](https://pypi.org/project/IMAPClient/) – Required to parse emails and download new files for remote code updates.  
-- [Adafruit Blinka](https://github.com/adafruit/Adafruit_Blinka) & [Adafruit CircuitPython ADS1x15](https://github.com/adafruit/Adafruit_CircuitPython_ADS1x15) – Necessary for the ADS1115 battery sensor.  
+- [Adafruit Blinka](https://github.com/adafruit/Adafruit_Blinka), [Adafruit CircuitPython ADS1x15](https://github.com/adafruit/Adafruit_CircuitPython_ADS1x15), and [RPi.GPIO]https://pypi.org/project/RPi.GPIO/ – Necessary for the ADS1115 battery sensor.  
 
 
 
