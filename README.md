@@ -24,12 +24,16 @@ This code turns a Raspberry Pi into an online audio streamer. Some of its featur
 1. If using the ADS1115 battery sensor, enable I2C:
 
 ```
-sudo raspi-config -> Interface Options -> I2C
+sudo raspi-config 
 ```
-2. If using MEMS microphones, enable I2S:
-
+Then navigate to Interface Options → I2C → Enable
+2. If using MEMS microphones, enable I2S by editing the config file:
 ```
-sudo raspi-config -> Interface Options -> I2S
+sudo nano /boot/firmware/config.txt
+```
+Add the following line at the end:
+```
+dtparam=i2s=on
 ```
 ### Setup
 
