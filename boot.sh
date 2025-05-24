@@ -28,6 +28,11 @@ sudo chattr +i /etc/resolv.conf
 
 log_nameservers
 
+# Try to connect to all the wifi specified in common.sh. 
+# If you wrote the hotspot first AND deleted the preconfigured network, it will give priority to the hotspot:
+# useful to test the hotspot at home before going into the wild...
+connect_to_wifi  
+
 # Give time for devices to show up. Maybe something lower will work, but without some time the stream doesn't start at boot.
 sleep 30
 
