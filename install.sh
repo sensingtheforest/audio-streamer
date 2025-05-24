@@ -149,6 +149,7 @@ python -m venv $PROJECT_FOLDER/venv
 source $PROJECT_FOLDER/venv/bin/activate
 pip install imapclient
 pip install astral
+pip install RPi.GPIO
 pip install adafruit-blinka
 pip install adafruit-circuitpython-ads1x15
 
