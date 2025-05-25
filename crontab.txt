@@ -1,5 +1,5 @@
-# These are the cronjobs we use to keep the streamer happy 
-# Run "crontab -e" from terminal and copy this lines. If you don't use the battery sensor or the email log, delete those cronjobs.
+# These are the cronjobs we use to keep the streamer happy and something more.
+# Run "crontab -e" from terminal and copy this lines. If you don't use the battery sensor or the email log, you can delete those cronjobs.
 
 # The environment in which cron jobs run is more limited than your normal shell environment, and this line should solve the path resolution.
 # If you set the PATH variable in your crontab, it applies to all the commands and scripts executed by the cron job.
@@ -16,16 +16,15 @@ MAILTO=""
 # Write on the log the measurment from the battery sensor. 
 15,45 * * * * $HOME/audio-streamer/venv/bin/python $HOME/audio-streamer/battery.py
 
-# Send the log file at 8AM. If too many lines, then keep the last 50000.
-0 8 * * * $HOME/audio-streamer/rotate-log.sh; sleep 5; $HOME/audio-streamer/send-email.sh
+# Send the log file at 9AM. Limit the lines to the last 50000.
+0 9 * * * $HOME/audio-streamer/rotate-log.sh; sleep 5; $HOME/audio-streamer/send-email.sh
 
 # At 3AM, check if darkice is streaming, if not reboot. 
 # Rebooting sends the log email so too often can be annoying... 
 0 3 * * * $HOME/audio-streamer/nuclear-option.sh
 
-# Check the email and copy attachemets with the specified subject into the main folder. 
-# Then execute blank.sh which does nothing unless you uploaded a version of it with some commands.
-0 4 * * * $HOME/audio-streamer/venv/bin/python $HOME/audio-streamer/update-code.py; sleep 5; $HOME/audio-streamer/blank.sh
+# Every 4 hours, check the email and copy attachemets with the specified subject into the main folder, then run blank.sh.
+0 */4 * * * $HOME/audio-streamer/venv/bin/python $HOME/audio-streamer/update-code.py; sleep 10; $HOME/audio-streamer/blank.sh
 
 
 
