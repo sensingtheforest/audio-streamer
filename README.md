@@ -45,7 +45,7 @@ dtparam=i2s=on
    git clone https://github.com/sensingtheforest/audio-streamer.git
    ```
 2. Install all the necessary libraries.
-   * Grant execute permission to the scripts:
+   * Grant execute permission to the scripts in the project folder:
    ```
    cd audio-streamer
    find . -type f \( -name "*.sh" -o -name "*.py" \) -exec chmod +x {} \;
