@@ -16,14 +16,14 @@ MAILTO=""
 # Write on the log the measurment from the battery sensor. 
 15,45 * * * * $HOME/audio-streamer/venv/bin/python $HOME/audio-streamer/battery.py
 
-# Send the log file at 9AM. Limit the lines to the last 50000.
+# At 9PM: send the log file and limit the lines to the last 50000.
 0 9 * * * $HOME/audio-streamer/rotate-log.sh; sleep 5; $HOME/audio-streamer/send-email.sh
 
-# At 3AM, check if darkice is streaming, if not reboot. 
+# At 3AM: check if darkice is streaming, if not reboot. 
 # Rebooting sends the log email so too often can be annoying... 
 0 3 * * * $HOME/audio-streamer/nuclear-option.sh
 
-# Every 4 hours, check the email and copy attachemets with the specified subject into the main folder, then run blank.sh.
+# Every 4 hours: look for an email with a specific subject, copy its attachments to the main folder, then run blank.sh.
 0 */4 * * * $HOME/audio-streamer/venv/bin/python $HOME/audio-streamer/update-code.py; sleep 10; $HOME/audio-streamer/blank.sh
 
 
