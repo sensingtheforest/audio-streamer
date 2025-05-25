@@ -44,25 +44,26 @@ dtparam=i2s=on
    sudo apt install git
    git clone https://github.com/sensingtheforest/audio-streamer.git
    ```
-2. Go to the project folder and run the install script:
+2. Install all the necessary libraries.
+   * Grant execute permission to the scripts:
    ```
    cd audio-streamer
-   ./install.sh
-   ```
-   * Before running install.sh, you may need to grant execute permission to the scripts. From the project folder, run:
-   ```
    find . -type f \( -name "*.sh" -o -name "*.py" \) -exec chmod +x {} \;
+   ```
+   * Now run the install script:
+   ```
+   ./install.sh
    ```
    * When prompted, say yes to configure Icecast2. After that, you can just use the default settings. If you change the default passwords, make sure to remember them — you’ll need them later for the Icecast2 config file. When prompted to configure msmtp (email app), and asked that confusing question, just go with the default no.
    * Say yes to reboot — this is the final step of the installer. If you changed the kernel headers setting in installer.sh, the installer will finish without rebooting.
    * **Note**: The script should install all required packages from the repositories. All the packages are listed in the script. There are some parameters at the beginning of install.sh   you can set to spare some time, otherwise it will do a full OS upgrade and compile the latest darkice version. This may take a while - get a cup of tea... or two... 
-3. For MEMS microphones, install drivers:
+4. For MEMS microphones, install drivers:
    ```
    ./mems-drivers.sh
    ```
    * Reboot when prompted (type `y`).
    * **Note**: If not using MEMS microphones, skip to step 4. 
-4. Set up the microphone:
+5. Set up the microphone:
    * Open the setup script:
    ```
    sudo nano mic-setup___o.sh
@@ -81,23 +82,23 @@ dtparam=i2s=on
    alsamixer
    ```
    To see the fader, click on "F6: Select your soundcard", and then show all volume controls with "F5: All".
-5. Configure settings:
+6. Configure settings:
    * Edit all remaining files ending in "___o" with your settings (settings are commented inside each file).
    * Save them without "___o" (e.g., edit `common___o.sh` and save as `common.sh`).
    * **Note**: You can keep the originals, only those without `"___o"` will be used.
-6. Test the stream:
+7. Test the stream:
    ```
    ./stream.sh
    ```
    * If set up correctly, you should be able to access the stream via your Icecast2 server address.
    * **Note**: This assumes that `darkice.cfg` has been set up correctly, there are no errors in the terminal, and the last line ends with `SCHED_FIFO`.
-7. Enable email operations:
+8. Enable email operations:
    * Follow instructions in `msmtprc.txt` to configure email account on the RPi.
-8. Set up cronjobs:
+9. Set up cronjobs:
    * Follow instructions in `crontab.txt`. 
-9. Create boot service:
+10. Create boot service:
    * See `boot.service.txt` for details on setting up the streamer to start at boot.
-10. ENJOY!
+11. ENJOY!
 
 ## Troubleshooting
 
