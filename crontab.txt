@@ -17,7 +17,7 @@ MAILTO=""
 15,45 * * * * $HOME/audio-streamer/venv/bin/python $HOME/audio-streamer/battery.py
 
 # Send the log file at 8AM. If too many lines, then keep the last 50000.
-0 8 * * * $HOME/audio-streamer/rotate-log.sh; sleep 5; $HOME/audio-streamer/email-log.sh
+0 8 * * * $HOME/audio-streamer/rotate-log.sh; sleep 5; $HOME/audio-streamer/send-email.sh
 
 # At 3AM, check if darkice is streaming, if not reboot. 
 # Rebooting sends the log email so too often can be annoying... 
