@@ -167,19 +167,16 @@ monitor_stream() {
             if [[ -n $DONGLE && $STREAM_MODE -ne 1 ]]; then
                 log "monitor_stream() - Dongle: $DONGLE" v
                 if ! check_usb0_ip; then
-                	# No ip address for the dongle. Try to get a new one.
-					get_new_usb0_ip
+                    # No ip address for the dongle. Try to get a new one.
+                    get_new_usb0_ip
                     # If there is already the process running, start_darkice() kills and restart.                    
                     start_darkice &
-                    # If internet isn't in great shape, it could take a while, so wait a couple of minutes before monitoring again. 
-                    sleep 120
                 # This elif can happen if the connection is poor and Darkice gets stuck with "reconnect  0" or "TcpSocket" errors.
-                # It's only in the dongle option because with wlan I never found this problem, 
-                # then the less frequent monitor.sh does the same check for any connection mode.
+                # With wlan I never had this problem, but with the dongle it also solved the issue of the server needing manual reboot.
+                # Then the less frequent monitor.sh does the same check for any connection mode.
                 elif [[ $(get_darkice_state) -eq 0 ]]; then
                     log "monitor_stream() - Darkice is open but the log reported a problem -> Kill and restart darkice."
                     start_darkice &
-                    sleep 120
                 fi
             fi
         else
@@ -187,7 +184,6 @@ monitor_stream() {
             # Unlike start_darkice, start_stream also opens the screen session in which darkice will run.
             # We need to run this in the background because there are sleep commands in the functions called.
             start_stream &
-            sleep 120
         fi
         sleep $DARKICE_MONITOR_INTERVAL
     done
