@@ -289,7 +289,7 @@ start_darkice() {
         echo "$darkice_line" | tee -a "$LOG_FILE"
         if [[ "$darkice_line" == *"reconnecting  0"* || "$darkice_line" == *"TcpSocket"* || "$darkice_line" == *"No such device"* ]]; then
             set_darkice_state 0
-		elif [[ "$darkice_line" == *"SCHED_FIFO"* ]]; then
+        elif [[ "$darkice_line" == *"SCHED_FIFO"* ]]; then
             set_darkice_state 1
         fi
         sleep 0.1
@@ -322,7 +322,7 @@ check_internet() {
     local interval=${2:-5}  # Arg2 - Interval between ping attempts in seconds, default is 5.
     local interface=${3:-}  # Arg3 - Network interface, optional.
 
-	local i
+    local i
     for ((i=1; i<=$attempts; i++)); do
         if [[ -n "$interface" ]]; then 
             if ping -c 2 -I $interface 8.8.8.8 >/dev/null; then
@@ -351,34 +351,34 @@ check_internet() {
 # Check usb0 IP address
 check_usb0_ip() {
     usb0_ip_address=$(ip addr show usb0 | grep 'inet ' | awk '{print $2}' | cut -d'/' -f1)
-	if [ -z "$usb0_ip_address" ]; then
+    if [ -z "$usb0_ip_address" ]; then
     	log "check_usb0_ip() - ERROR: No IP address assigned to usb0."
     	return 1
-	else
-		log "check_usb0_ip() - usb0 ip address: $usb0_ip_address" v
-		return 0
-	fi
+    else
+        log "check_usb0_ip() - usb0 ip address: $usb0_ip_address" v
+        return 0
+    fi
 }
 
 # Try to get new usb0 IP address. This one is called only when check_usb0_ip fails.
 get_new_usb0_ip() {
-	# Check if usb0 is up but if already up, this command does nothing
-	if sudo ip link set usb0 up; then
-		log "get_new_usb0_ip() - usb0 is up -> systemctl restart networking to try to get ip address for the device."
-		sudo systemctl restart networking
-		sleep 2
-		usb0_ip_address=$(ip addr show usb0 | grep 'inet ' | awk '{print $2}' | cut -d'/' -f1)
-		if [ -z "$usb0_ip_address" ]; then
-    		log "get_new_usb0_ip() - ERROR: No IP address assigned to usb0."
-			return 1
-    	else
-			log "get_new_usb0_ip() - New usb0 ip address: $usb0_ip_address"
-			return 0
-		fi
-	else
-		log "get_new_usb0_ip() - ERROR: usb0 is down."
-		return 1
-	fi
+    # Check if usb0 is up but if already up, this command does nothing
+    if sudo ip link set usb0 up; then
+        log "get_new_usb0_ip() - usb0 is up -> systemctl restart networking to try to get ip address for the device."
+        sudo systemctl restart networking
+        sleep 2
+        usb0_ip_address=$(ip addr show usb0 | grep 'inet ' | awk '{print $2}' | cut -d'/' -f1)
+        if [ -z "$usb0_ip_address" ]; then
+            log "get_new_usb0_ip() - ERROR: No IP address assigned to usb0."
+            return 1
+        else
+            log "get_new_usb0_ip() - New usb0 ip address: $usb0_ip_address"
+            return 0
+        fi
+    else
+        log "get_new_usb0_ip() - ERROR: usb0 is down."
+        return 1
+    fi
 }
 				
 # Check permitted SSIDs (WIFI_SSIDS[]) and connect if necessary
@@ -387,7 +387,7 @@ connect_to_wifi() {
     sudo nmcli dev wifi rescan
     sleep 2
 
-	local i
+    local i
     for i in "${!WIFI_SSIDS[@]}"; do
         wifi_ssid="${WIFI_SSIDS[i]}"
         wifi_password="${WIFI_PWDS[i]}"
