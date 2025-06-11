@@ -16,10 +16,10 @@ start_stream() {
         # Try to stream with wifi (in the wilderness probably a hotspot) but if it fails try to use dongle right away. 
         # It that fails too, throw the hail mary...
         if ! stream_wifi; then
-			if ! stream_dongle; then
-				log "start_stream() - Trying to stream with whatever active internet device..."
-				stream_whatever
-			fi
+            if ! stream_dongle; then
+                log "start_stream() - Trying to stream with whatever active internet device..."
+                stream_whatever
+            fi
         fi
         sleep 1
         log "start_stream() - Waiting $DONGLEMODE_WIFI_WINDOW sec before shutting down wifi..."
@@ -30,18 +30,18 @@ start_stream() {
         sleep 1
         # STREAMER_STEATE=2 means streaming with dongle -> if you're already streaming with the dongle, do nothing.
         if (( $(get_streamer_state) != 2 )); then
-			if ! stream_dongle; then
-				log "start_stream() - Trying to stream with whatever active internet device..."
-				stream_whatever
-			fi
+            if ! stream_dongle; then
+                log "start_stream() - Trying to stream with whatever active internet device..."
+                stream_whatever
+            fi
         fi
     elif [[ $STREAM_MODE -eq 3 ]]; then
-		log "start_stream() - Stream with whatever active internet device..."
-		stream_whatever
+        log "start_stream() - Stream with whatever active internet device..."
+        stream_whatever
     elif [[ $STREAM_MODE -eq 4 ]]; then
         stream_greedywifi
-	else
-		log "ERROR: Invalid stream mode."
+    else
+        log "ERROR: Invalid stream mode."
     fi
 }
 
@@ -63,16 +63,16 @@ stream_wifi() {
 }
 
 stream_dongle() {
-	# If usb dongle is detected, then check internet via dongle and start darkice. 
-	if ip addr show usb0; then
-		if ping -c 2 -I usb0 8.8.8.8; then
-			log "stream_dongle() - Ping successful on usb0."
-			set_streamer_state 2
-			start_darkice &
-		else
-			log "stream_dongle() - ERROR: Cannot stream with dongle."
-			return 1
-		fi
+    # If usb dongle is detected, then check internet via dongle and start darkice. 
+    if ip addr show usb0; then
+        if ping -c 2 -I usb0 8.8.8.8; then
+            log "stream_dongle() - Ping successful on usb0."
+            set_streamer_state 2
+            start_darkice &
+        else
+            log "stream_dongle() - ERROR: Cannot stream with dongle."
+            return 1
+        fi
     else 
     	log "stream_dongle() - ERROR: No usb0 device found."
     fi
