@@ -57,13 +57,13 @@ This code turns a Raspberry Pi into an online audio streamer. Some of its featur
    * When prompted, say yes to configure Icecast2. After that, you can just use the default settings. If you change the default passwords, make sure to remember them — you’ll need them later for the Icecast2 config file. When prompted to configure msmtp (email app), and asked that confusing question, just go with the default no.
    * Say yes to reboot — this is the final step of the installer. If you changed the kernel headers setting in installer.sh, the installer will finish without rebooting.
    * **Note**: The script should install all required packages from the repositories. All the packages are listed in the script. There are some parameters at the beginning of install.sh   you can set to spare some time, otherwise it will do a full OS upgrade and compile the latest darkice version. This may take a while - get a cup of tea... or two... 
-4. For MEMS microphones, install drivers:
+3. For MEMS microphones, install drivers:
    ```
    ./mems-drivers.sh
    ```
    * Reboot when prompted (type `y`).
    * **Note**: If not using MEMS microphones, skip to step 4. 
-5. Set up the microphone:
+4. Set up the microphone:
    * Open the setup script:
    ```
    sudo nano mic-setup___o.sh
@@ -83,17 +83,17 @@ This code turns a Raspberry Pi into an online audio streamer. Some of its featur
    alsamixer
    ```
    To see the fader, click on "F6: Select your soundcard", and then show all volume controls with "F5: All".
-6. Configure settings:
+5. Configure settings:
    * Edit all remaining files ending in "___o" with your settings (settings are commented inside each file).
    * Save them without "___o" (e.g., edit `common___o.sh` and save as `common.sh`).
    * **Note**: You can keep the originals, only those without `"___o"` will be used.
-7. Test the stream:
+6. Test the stream:
    ```
    ./stream.sh
    ```
    * If set up correctly, you should be able to access the stream via your Icecast2 server address.
    * **Note**: This assumes that `darkice.cfg` has been set up correctly, there are no errors in the terminal, and the last line ends with `SCHED_FIFO`.
-8. Enable email operations:
+7. Enable email operations:
    * Obtain an App Password from your email account (we used Gmail).
    * Update the 'from', 'user', and 'password' fields with your own credentials.
    * Save this file as a hidden configuration in your home folder and set the appropriate permissions.
@@ -101,13 +101,13 @@ This code turns a Raspberry Pi into an online audio streamer. Some of its featur
    sudo mv msmtprc___o.txt ~/.msmtprc
    chmod 600 ~/.msmtprc
    ```
-10. Set up cronjobs:
+8. Set up cronjobs:
    * Open the crontab editor 
    ```
    crontab -e
    ```
    * Copy the entire content of crontab.txt, paste it into the editor, and save.
-11. Create boot service:
+9. Create boot service:
    * Open boot.service.txt
    ```
    sudo nano boot.service.txt
@@ -127,7 +127,7 @@ This code turns a Raspberry Pi into an online audio streamer. Some of its featur
    ```
    sudo systemctl status boot.service
    ```
-11. ENJOY!
+10. ENJOY!
 
 ## Troubleshooting
 
