@@ -74,6 +74,7 @@ dtparam=i2s=on
    ```
    * Save the file as mic-setup.sh (remove "___o") and run it:
    ```
+   sudo mv mic-setup___o.sh mic-setup.sh 
    ./mic-setup.sh
    ```
    * A 10-second recording test should start. You should see volume meters (or a vague memory of them) moving. Check for `mic-test.wav` in the project folder.
@@ -93,10 +94,16 @@ dtparam=i2s=on
    * If set up correctly, you should be able to access the stream via your Icecast2 server address.
    * **Note**: This assumes that `darkice.cfg` has been set up correctly, there are no errors in the terminal, and the last line ends with `SCHED_FIFO`.
 8. Enable email operations:
-   * Follow instructions in `msmtprc.txt` to configure email account on the RPi.
-9. Set up cronjobs:
+   * Obtain an App Password from your email account (we used Gmail).
+   * Update the 'from', 'user', and 'password' fields with your own credentials.
+   * Save this file as a hidden configuration in your home folder and set the appropriate permissions.
+   ```
+   sudo mv msmtprc___o.txt ~/.msmtprc
+   chmod 600 ~/.msmtprc
+   ```
+10. Set up cronjobs:
    * Follow instructions in `crontab.txt`. 
-10. Create boot service:
+11. Create boot service:
    * See `boot.service.txt` for details on setting up the streamer to start at boot.
 11. ENJOY!
 
