@@ -10,9 +10,6 @@ sim7600g-h)
 	
 	log "Rebooting dongle..."        
 
-    # This has to be longer than the time minicom takes to do its thing.   
-    sleep 25
-
 	# Check if dhclient is already ignoring usb0. Maybe this part isn't necessary...
 	if ! grep -q 'interface "usb0" {' /etc/dhcp/dhclient.conf; then
   	# Add the new configuration to the end of the file
