@@ -23,19 +23,19 @@ This code turns a Raspberry Pi into an online audio streamer. Some of its featur
 
 1. If using the ADS1115 battery sensor, enable I2C:
 
-```
-sudo raspi-config 
-```
-Then navigate to Interface Options → I2C → Enable
+   ```
+   sudo raspi-config 
+   ```
+   Then navigate to Interface Options → I2C → Enable
 
 2. If using MEMS microphones, enable I2S by editing the config file:
-```
-sudo nano /boot/firmware/config.txt
-```
-Add the following line at the end:
-```
-dtparam=i2s=on
-```
+   ```
+   sudo nano /boot/firmware/config.txt
+   ```
+   Add the following line at the end:
+   ```
+   dtparam=i2s=on
+   ```
 ### Setup
 
 1. Download the project folder to your Raspberry Pi's home directory. From the home folder:
@@ -65,13 +65,13 @@ dtparam=i2s=on
    * **Note**: If not using MEMS microphones, skip to step 4. 
 5. Set up the microphone:
    * Open the setup script:
-   ```
-   sudo nano mic-setup___o.sh
-   ```
+      ```
+      sudo nano mic-setup___o.sh
+      ```
    * Set DEVICE and FORMAT to match your microphone. You can find your device name running:
-   ```
-   arecord -l
-   ```
+      ```
+      arecord -l
+      ```
    * Save the file as mic-setup.sh (remove "___o") and run it:
       ```
       sudo mv mic-setup___o.sh mic-setup.sh 
