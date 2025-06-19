@@ -65,68 +65,68 @@ This code turns a Raspberry Pi into an online audio streamer. Some of its featur
    * **Note**: If not using MEMS microphones, skip to step 4. 
 5. Set up the microphone:
    * Open the setup script:
-      ```
-      sudo nano mic-setup___o.sh
-      ```
+   ```
+   sudo nano mic-setup___o.sh
+   ```
    * Set DEVICE and FORMAT to match your microphone. You can find your device name running:
-      ```
-      arecord -l
-      ```
+   ```
+   arecord -l
+   ```
    * Save the file as mic-setup.sh (remove "___o") and run it:
-      ```
-      sudo mv mic-setup___o.sh mic-setup.sh 
-      ./mic-setup.sh
-      ```
+   ```
+   sudo mv mic-setup___o.sh mic-setup.sh 
+   ./mic-setup.sh
+   ```
    * A 10-second recording test should start. You should see volume meters (or a vague memory of them) moving. Check for `mic-test.wav` in the project folder.
    * You can adjust the microphone capture volume in alsamixer. Run:
-      ```
-      alsamixer
-      ```
+   ```
+   alsamixer
+   ```
    To see the fader, click on "F6: Select your soundcard", and then show all volume controls with "F5: All".
 6. Configure settings:
    * Edit all remaining files ending in "___o" with your settings (settings are commented inside each file).
    * Save them without "___o" (e.g., edit `common___o.sh` and save as `common.sh`).
    * **Note**: You can keep the originals, only those without `"___o"` will be used.
 7. Test the stream:
-      ```
-      ./stream.sh
-      ```
+   ```
+   ./stream.sh
+   ```
    * If set up correctly, you should be able to access the stream via your Icecast2 server address.
    * **Note**: This assumes that `darkice.cfg` has been set up correctly, there are no errors in the terminal, and the last line ends with `SCHED_FIFO`.
 8. Enable email operations:
    * Obtain an App Password from your email account (we used Gmail).
    * Update the 'from', 'user', and 'password' fields with your own credentials.
    * Save this file as a hidden configuration in your home folder and set the appropriate permissions.
-      ```
-      sudo mv msmtprc___o.txt ~/.msmtprc
-      chmod 600 ~/.msmtprc
-      ```
+   ```
+   sudo mv msmtprc___o.txt ~/.msmtprc
+   chmod 600 ~/.msmtprc
+   ```
 10. Set up cronjobs:
    * Open the crontab editor 
-      ```
-      crontab -e
-      ```
+   ```
+   crontab -e
+   ```
    * Copy the entire content of crontab.txt, paste it into the editor, and save.
 11. Create boot service:
    * Open boot.service.txt
-      ```
-      sudo nano boot.service.txt
-      ```
+   ```
+   sudo nano boot.service.txt
+   ```
    * Replace the placeholder values in the 'ExecStart', 'User', and 'WorkingDirectory' fields with your actual username. Save and exit the editor.
    * Rename the file and move it to the correct systemd directory:
-      ```
-      sudo mv boot.service.txt /etc/systemd/system/boot.service
-      ```
+   ```
+   sudo mv boot.service.txt /etc/systemd/system/boot.service
+   ```
    * Reload systemd, enable the service to run at boot, and reboot the system:
-      ```
-      sudo systemctl daemon-reload
-      sudo systemctl enable boot.service
-      sudo reboot
-      ```
+   ```
+   sudo systemctl daemon-reload
+   sudo systemctl enable boot.service
+   sudo reboot
+   ```
    * After rebooting, you can check if the service is running properly with:
-      ```
-      sudo systemctl status boot.service
-      ```
+   ```
+   sudo systemctl status boot.service
+   ```
 11. ENJOY!
 
 ## Troubleshooting
