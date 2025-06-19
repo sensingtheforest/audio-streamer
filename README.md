@@ -102,9 +102,31 @@ dtparam=i2s=on
    chmod 600 ~/.msmtprc
    ```
 10. Set up cronjobs:
-   * Follow instructions in `crontab.txt`. 
+   * Open the crontab editor 
+   ```
+   crontab -e
+   ```
+   * Copy the entire content of crontab.txt, paste it into the editor, and save.
 11. Create boot service:
-   * See `boot.service.txt` for details on setting up the streamer to start at boot.
+   * Open boot.service.txt
+      ```
+      sudo nano boot.service.txt
+      ```
+   * Replace the placeholder values in the 'ExecStart', 'User', and 'WorkingDirectory' fields with your actual username. Save and exit the editor.
+   * Rename the file and move it to the correct systemd directory:
+     ```
+     sudo mv boot.service.txt /etc/systemd/system/boot.service
+     ```
+   * Reload systemd, enable the service to run at boot, and reboot the system:
+     ```
+   sudo systemctl daemon-reload
+   sudo systemctl enable boot.service
+   sudo reboot
+     ```
+     After rebooting, you can check if the service is running properly with:
+     ```
+     sudo systemctl status boot.service
+     ```
 11. ENJOY!
 
 ## Troubleshooting
