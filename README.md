@@ -114,7 +114,7 @@ This code turns a Raspberry Pi into an online audio streamer. Some of its featur
    sudo nano boot.service.txt
    ```
    * Replace the placeholder values in the 'ExecStart', 'User', and 'WorkingDirectory' fields with your actual username. Save and exit the editor.
-   * Rename the file and move it to the correct systemd directory:
+   * Remove the extension and move the file to the correct systemd directory:
    ```
    sudo mv boot.service.txt /etc/systemd/system/boot.service
    ```
