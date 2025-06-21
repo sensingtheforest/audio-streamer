@@ -101,7 +101,7 @@ This code turns a Raspberry Pi into an online audio streamer. Some of its featur
    sudo mv msmtprc___o.txt ~/.msmtprc
    chmod 600 ~/.msmtprc
    ```
-   * Enable IMAP on your email account to allow the Raspberry Pi to receive remote updates.
+   * Enable IMAP on your email account to allow the Raspberry Pi to download attachments from your emails and receive remote updates.
 8. Set up cronjobs:
    * Open the crontab editor 
    ```
