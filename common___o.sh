@@ -362,23 +362,30 @@ check_usb0_ip() {
 
 # Try to get new usb0 IP address. This one is called only when check_usb0_ip fails.
 get_new_usb0_ip() {
-    # Check if usb0 is up but if already up, this command does nothing
-    if sudo ip link set usb0 up; then
-        log "get_new_usb0_ip() - usb0 is up -> systemctl restart networking to try to get ip address for the device."
-        sudo systemctl restart networking
-        sleep 2
-        usb0_ip_address=$(ip addr show usb0 | grep 'inet ' | awk '{print $2}' | cut -d'/' -f1)
-        if [ -z "$usb0_ip_address" ]; then
-            log "get_new_usb0_ip() - ERROR: No IP address assigned to usb0."
-            return 1
-        else
-            log "get_new_usb0_ip() - New usb0 ip address: $usb0_ip_address"
-            return 0
-        fi
-    else
-        log "get_new_usb0_ip() - ERROR: usb0 is down."
-        return 1
-    fi
+	sudo ip link set usb0 up
+	log "Trying systemctl restart networking to get IP address..."
+	sudo systemctl restart networking
+	sleep 2
+	usb0_ip_address=$(ip -4 addr show usb0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')
+	if [ -n "$usb0_ip_address" ]; then
+		log "New IP from systemctl restart: $usb0_ip_address"
+		return 0
+	fi
+
+	log "systemctl restart networking failed — falling back to dhclient..."
+	sudo dhclient -r usb0 2>/dev/null
+	sudo ip addr flush dev usb0
+	sudo rm -f /var/lib/dhcp/dhclient.leases
+	sudo dhclient usb0
+	sleep 2
+	usb0_ip_address=$(ip -4 addr show usb0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')
+	if [ -n "$usb0_ip_address" ]; then
+		log "New IP from dhclient: $usb0_ip_address"
+		return 0
+	else
+		log "ERROR: Still no IP after fallback."
+		return 1
+	fi
 }
 				
 # Check permitted SSIDs (WIFI_SSIDS[]) and connect if necessary
