@@ -98,121 +98,121 @@ log() {
 # Change STREAMER_STATE in the state file
 # 0 = not streaming, 1 = streaming with wifi, 2 = streaming with usb dongle
 set_streamer_state() {
-    local new_state=$1
-    # Check if the state file exists
-    if [[ -f $STATE_FILE ]]; then
-        # Update the STREAMER_STATE in the state file
-        sed -i "1s/STREAMER_STATE=[0-9]/STREAMER_STATE=$new_state/" $STATE_FILE
+	local new_state=$1
+	# Check if the state file exists
+	if [[ -f $STATE_FILE ]]; then
+		# Update the STREAMER_STATE in the state file
+		sed -i "1s/STREAMER_STATE=[0-9]/STREAMER_STATE=$new_state/" $STATE_FILE
 		return 0
-    else
-        log "State file not found. Creating new state file..."
+	else
+		log "State file not found. Creating new state file..."
 		return 1
-    fi
+	fi
 }
 
 # Get STREAMER_STATE from the state file
 get_streamer_state() {
-    # Check if the state file exists
-    if [[ -f $STATE_FILE ]]; then
-        # Read the STREAMER_STATE from the state file
-        local streamer_state=$(grep '^STREAMER_STATE=' $STATE_FILE | cut -d '=' -f 2)
-        # In bash you need to echo to use the value in another script with var=$(get_streamer_state)...
-        echo "$streamer_state"
-    	return 0
-    else
-        log "State file not found."
-        return 1
-    fi
+	# Check if the state file exists
+	if [[ -f $STATE_FILE ]]; then
+		# Read the STREAMER_STATE from the state file
+		local streamer_state=$(grep '^STREAMER_STATE=' $STATE_FILE | cut -d '=' -f 2)
+		# In bash you need to echo to use the value in another script with var=$(get_streamer_state)...
+		echo "$streamer_state"
+		return 0
+	else
+		log "State file not found."
+		return 1
+	fi
 }
 
 # Change DARKICE_STATE in the state file
 # 0 = not streaming, 1 = streaming
 set_darkice_state() {
-    local new_state=$1
-    if [[ -f $STATE_FILE ]]; then
-        sed -i "2s/DARKICE_STATE=[0-9]/DARKICE_STATE=$new_state/" $STATE_FILE
+	local new_state=$1
+	if [[ -f $STATE_FILE ]]; then
+		sed -i "2s/DARKICE_STATE=[0-9]/DARKICE_STATE=$new_state/" $STATE_FILE
 		return 0
-    else
-        log "State file not found."
+	else
+		log "State file not found."
 		return 1
-    fi
+	fi
 }
 
 # Get DARKICE_STATE from the state file
 get_darkice_state() {
-    # Check if the state file exists
-    if [[ -f $STATE_FILE ]]; then
-        # Read the DARKICE_STATE from the state file
-        local darkice_state=$(grep '^DARKICE_STATE=' $STATE_FILE | cut -d '=' -f 2)
-        echo "$darkice_state"
+	# Check if the state file exists
+	if [[ -f $STATE_FILE ]]; then
+		# Read the DARKICE_STATE from the state file
+		local darkice_state=$(grep '^DARKICE_STATE=' $STATE_FILE | cut -d '=' -f 2)
+		echo "$darkice_state"
 		return 0
-    else
-        log "State file not found."
-        return 1
-    fi
+	else
+		log "State file not found."
+		return 1
+	fi
 }
 
 # Change BOOT_STATE in the state file
 # 1 = booting, 0 = normal
 set_boot_state() {
-    local new_state=$1
-    if [[ -f $STATE_FILE ]]; then
-        sed -i "3s/BOOT_STATE=[0-9]/BOOT_STATE=$new_state/" $STATE_FILE
+local new_state=$1
+	if [[ -f $STATE_FILE ]]; then
+		sed -i "3s/BOOT_STATE=[0-9]/BOOT_STATE=$new_state/" $STATE_FILE
 		return 0
-    else
-        log "State file not found."
+	else
+		log "State file not found."
 		return 1
-    fi
+	fi
 }
 
 get_boot_state() {
-    if [[ -f $STATE_FILE ]]; then
-        local boot_state=$(grep '^BOOT_STATE=' $STATE_FILE | cut -d '=' -f 2)
-        echo "$boot_state"
+	if [[ -f $STATE_FILE ]]; then
+		local boot_state=$(grep '^BOOT_STATE=' $STATE_FILE | cut -d '=' -f 2)
+		echo "$boot_state"
 		return 0
-    else
-        log "State file not found."
-        return 1
-    fi
+	else
+		log "State file not found."
+		return 1
+	fi
 }
 
 # Change RECORDING_STATE in the state file
 # 1 = record, 0 = nope
 set_record_state() {
-    local new_state=$1
-    if [[ -f $STATE_FILE ]]; then
-        sed -i "4s/RECORD_STATE=[0-9]/RECORD_STATE=$new_state/" $STATE_FILE
+	local new_state=$1
+	if [[ -f $STATE_FILE ]]; then
+		sed -i "4s/RECORD_STATE=[0-9]/RECORD_STATE=$new_state/" $STATE_FILE
 		return 0
-    else
-        log "State file not found."
+	else
+		log "State file not found."
 		return 1
-    fi
+	fi
 }
 
 get_record_state() {
-    if [[ -f $STATE_FILE ]]; then
-        local record_state=$(grep '^RECORD_STATE=' $STATE_FILE | cut -d '=' -f 2)
-        echo "$record_state"
+	if [[ -f $STATE_FILE ]]; then
+		local record_state=$(grep '^RECORD_STATE=' $STATE_FILE | cut -d '=' -f 2)
+		echo "$record_state"
 		return 0
-    else
-        log "State file not found."
-        return 1
-    fi
+	else
+		log "State file not found."
+		return 1
+	fi
 }
 
 # This is called in the boot script
 init_state() {
-    if [[ -f $STATE_FILE ]]; then
+	if [[ -f $STATE_FILE ]]; then
 		set_streamer_state 0
 		set_darkice_state 0
 		set_boot_state 0
 		set_record_state 0
 	else
-        echo "init_state() - State file doesn't exist -> Creating state file with default values..."
-        echo "STREAMER_STATE=0" > $STATE_FILE
-        echo "DARKICE_STATE=0" >> $STATE_FILE
-        echo "BOOT_STATE=0" >> $STATE_FILE
-        echo "RECORD_STATE=0" >> $STATE_FILE
+		echo "init_state() - State file doesn't exist -> Creating state file with default values..."
+		echo "STREAMER_STATE=0" > $STATE_FILE
+		echo "DARKICE_STATE=0" >> $STATE_FILE
+		echo "BOOT_STATE=0" >> $STATE_FILE
+		echo "RECORD_STATE=0" >> $STATE_FILE
 	fi
 }
 
@@ -234,21 +234,21 @@ kill_stream() {
     # Check if there are darkice processes left open and kill
     if ps aux | grep darkice | grep -v grep; then 
         sudo killall -9 darkice
-		set_darkice_state 0
+        set_darkice_state 0
     fi
 }
 
 kill_darkice() {
-    if ps aux | grep darkice | grep -v grep; then 
+	if ps aux | grep darkice | grep -v grep; then 
 		log "Existing darkice processes detected -> Kill all. Screen sessions and eventual main loops will stay open."
-        sudo killall -9 darkice &>/dev/null
+		sudo killall -9 darkice &>/dev/null
 		set_darkice_state 0
-        sleep 1
+		sleep 1
 		return 0
 	else
 		log "There are no open darkice processes." v
 		return 0
-    fi
+	fi
 }
 
 status_darkice() {
@@ -258,9 +258,9 @@ status_darkice() {
         return 0
     else
         log "status_darkice() - Darkice is not running."
-		# Setting here the negative state can look redundant but this is critical info and some redundancy can help. 
-		# Don't set the positive state in state.txt because the active process doesn't mean that it's streaming correctly. 
-		# For that, it's better to parse the darkice's output, see start_darkice()
+        # Setting here the negative state can look redundant but this is critical info and some redundancy can help. 
+        # Don't set the positive state in state.txt because the active process doesn't mean that it's streaming correctly. 
+        # For that, it's better to parse the darkice's output, see start_darkice()
         set_darkice_state 0
         return 1
     fi
