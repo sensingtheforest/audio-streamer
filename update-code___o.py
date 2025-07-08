@@ -18,13 +18,14 @@ import os
 from datetime import datetime, timedelta
 
 
-# Email account credentials------------------
+# --- Email account credentials and script config (edit this section!) ---
 IMAP_SERVER = "imap.gmail.com"
-EMAIL_ACCOUNT = "emailAccountToCheck"
-PASSWORD = "something that looks like rvyxabbebgnwtdei" # App password from Google
-PROJECT_DIR = Path(__file__).resolve().parent # Absolute path of the folder where this script is
-SEARCH_SUBJECT = "update code myProjectName"  # The subject to search for
-# -------------------------------------------
+EMAIL_ACCOUNT = "your-email@gmail.com"
+PASSWORD = "your-app-password"  # Use a Google app password, not your main account password
+PROJECT_DIR = Path(__file__).resolve().parent
+SEARCH_SUBJECT = "update code myProjectName"  # <-- Change to match your subject line
+SEARCH_DAYS = 3  # Number of days to look back in the inbox
+# ------------------------------------------------------------------------
 
 
 # Ensure the directory exists
