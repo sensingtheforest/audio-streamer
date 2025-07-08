@@ -2,7 +2,7 @@
 # This is a workaround. Instead of loading new code and/or shell commands directly 
 # to the RPi, we have the RPi downloading them from an email address. 
 # Once you specify the email address and subject to look for, it will check all the email 
-# in the last 7 days, and if the subject matches, it downloads all the attachments into 
+# in the last 3 days, and if the subject matches, it downloads all the attachments into 
 # the home folder. 
 # To execute shell commands, this script works with blank.sh (see blank.sh for details)
 
@@ -44,8 +44,8 @@ def log_message(message):
 log_message("______________UPDATE CODE")
 
 
-# Calculate the date 7 days ago in IMAP format (DD-MMM-YYYY)
-date_7_days_ago = (datetime.now() - timedelta(days=7)).strftime("%d-%b-%Y")
+# Calculate the date x days ago in IMAP format (DD-MM-YYYY)
+date_x_days_ago = (datetime.now() - timedelta(days=SEARCH_DAYS)).strftime("%d-%b-%Y")
 
 # Connect to email server
 mail = imaplib.IMAP4_SSL(IMAP_SERVER)
@@ -53,7 +53,7 @@ mail.login(EMAIL_ACCOUNT, PASSWORD)
 mail.select("inbox")  # Select the inbox
 
 # Search for emails with the subject and date filter
-search_criteria = f'(SINCE {date_7_days_ago} SUBJECT "{SEARCH_SUBJECT}")'
+search_criteria = f'(SINCE {date_x_days_ago} SUBJECT "{SEARCH_SUBJECT}")'
 status, messages = mail.search(None, search_criteria)
 
 email_ids = messages[0].split()
