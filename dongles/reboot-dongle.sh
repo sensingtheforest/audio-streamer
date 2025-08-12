@@ -10,34 +10,10 @@ sim7600g-h)
 	
 	log "Rebooting dongle..."        
 
-	# Check if dhclient is already ignoring usb0. Maybe this part isn't necessary...
-	if ! grep -q 'interface "usb0" {' /etc/dhcp/dhclient.conf; then
-  	# Add the new configuration to the end of the file
-  		echo -e '\ninterface "usb0" {\n    ignore;\n}' | sudo tee -a /etc/dhcp/dhclient.conf
-  		echo "Configuration added successfully to dhclient.conf."
-	else
-  		echo "Configuration for 'usb0' already exists in /etc/dhcp/dhclient.conf."
-	fi
-	
-	# Check if the static ip configuration for usb0 already exists	
-	if [ ! -f /etc/network/interfaces.d/usb0-static-ip ]; then
-		if [ -f $PROJECT_FOLDER/dongles/usb0-static-ip ]; then
-			if sudo cp $PROJECT_FOLDER/dongles/usb0-static-ip /etc/network/interfaces.d/; then
-				log "usb0-static-ip config file successfully copied to /etc/network/interfaces.d/"
-				sudo systemctl restart networking
-			fi
-		else
-			log "Static ip address config file for usb dongle not found. You'll need to find a way to give a static ip address for the usb dongle or make sure that the ip address lease renewal policy doesn't disconnect the dongle after 12 hours or so."
-		fi
-	else
-		log "usb0-static-ip is already in /etc/network/interfaces.d/"
-	fi
-
-	# Check if there are active ip lease policies and remove them if necessary: you need the static IP for usb0
-	if [ -f /var/lib/dhcp/dhclient.leases ]; then
-		log "WARNING: usb0 IP address leases found -> Removing /var/lib/dhcp/dhclient.leases"
-		sudo rm /var/lib/dhcp/dhclient.leases
-	fi
+	# This dongle, for us, needed the ignore command in /etc/dhcp/dhclient.conf and the static ip config.
+	# All done in this function in common.sh
+	# This one is also called in boot.sh if you enable static ip in the config variables, but it works here as a note too...
+ 	set_static_ip()
 
 	log "You selected the dongle sim7600g-h -> Restarting dongle via minicom."
 	
