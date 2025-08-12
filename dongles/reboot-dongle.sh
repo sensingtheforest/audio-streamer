@@ -13,7 +13,7 @@ sim7600g-h)
 	# This dongle, for us, needed the ignore command in /etc/dhcp/dhclient.conf and the static ip config.
 	# All done in this function in common.sh
 	# This one is also called in boot.sh if you enable static ip in the config variables, but it works here as a note too...
- 	set_static_ip()
+ 	set_static_ip
 
 	log "You selected the dongle sim7600g-h -> Restarting dongle via minicom."
 	
