@@ -49,10 +49,11 @@ RECORD=1 # Use solar crontab to automate recordings. Check solar-crontab.py to c
 RECORD_SESSION_NAME="record"
 RECORD_DURATION=300 # Duration of the automated recordings in seconds.
 
-# The Huawei brovi_e3372 needed some tricks. If you use that one and write it here, the code will set it up automatically. 
+# The Huawei brovi_e3372 needs reboot, and it was tricky to do. If you use that one and write it here, the code will set it up automatically.
+# The sim7600g-h preferred a static ip, but maybe this one could work also if you keep DONGLE set to generic...  
 # You can leave it empty for home wifi, but with stream_mode = 1 (wi-fi) it will work either way.
-DONGLE="generic" # Options: brovi_e3372, generic, empty (""). 
-# Don't change this one, but if you really have to reboot your dongle via cmd, make sure that reboot-dongle.sh works for your device.
+DONGLE="generic" # Options: brovi_e3372, sim7600g-h, generic, empty (""). 
+# Enable/disable dongle reboot at start. If you really need this, make sure that reboot-dongle.sh works for your device.
 DONGLE_REBOOT=0
 # Some internet dongles need the static IP, of they don't renew the lease. This is done and undone with functions in this script. 
 STATIC_IP=0  # disable/enable static IP for the dongle
