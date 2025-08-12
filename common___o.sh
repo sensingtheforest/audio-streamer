@@ -56,7 +56,7 @@ DONGLE="generic" # Options: brovi_e3372, generic, empty ("").
 DONGLE_REBOOT=0
 # Some internet dongles need the static IP, of they don't renew the lease. This is done and undone with functions in this script. 
 STATIC_IP=0  # disable/enable static IP for the dongle
-USB0_ADDRESS="192.168.225.39"  # user-configurable
+USB0_ADDRESS="192.168.225.39"  # user-configurable, it only works if static IP is enabled
 # These two paths are used in the static ip functions.
 DHCLIENT_CONF="/etc/dhcp/dhclient.conf"
 STATIC_CONF_FILE="/etc/network/interfaces.d/usb0-static-ip"
