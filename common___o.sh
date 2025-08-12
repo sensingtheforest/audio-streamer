@@ -48,11 +48,19 @@ STREAM_SESSION_NAME="stream"
 RECORD=1 # Use solar crontab to automate recordings. Check solar-crontab.py to change the solar times and location.
 RECORD_SESSION_NAME="record"
 RECORD_DURATION=300 # Duration of the automated recordings in seconds.
+
 # The Huawei brovi_e3372 needed some tricks. If you use that one and write it here, the code will set it up automatically. 
 # You can leave it empty for home wifi, but with stream_mode = 1 (wi-fi) it will work either way.
 DONGLE="generic" # Options: brovi_e3372, generic, empty (""). 
 # Don't change this one, but if you really have to reboot your dongle via cmd, make sure that reboot-dongle.sh works for your device.
 DONGLE_REBOOT=0
+# Some internet dongles need the static IP, of they don't renew the lease. This is done and undone with functions in this script. 
+STATIC_IP=0  # disable/enable static IP for the dongle
+USB0_ADDRESS="192.168.225.39"  # user-configurable
+# These two paths are used in the static ip functions.
+DHCLIENT_CONF="/etc/dhcp/dhclient.conf"
+STATIC_CONF_FILE="/etc/network/interfaces.d/usb0-static-ip"
+
 # Interval for monitor_stream(). It checks if darkice is running, DARKICE state variable, and the dongle ip address when DONGLE isn't empty. 
 # Any bad state will trigger countermeasures, but this is lighter than the monitor.sh, which is run from crontab at larger intervals.
 DARKICE_MONITOR_INTERVAL=60
@@ -419,5 +427,49 @@ connect_to_wifi() {
     log "Network '${WIFI_SSIDS[*]}' is not available."
     return 1
 
+}
+
+
+set_static_ip() {
+	# Make sure folder exists
+    sudo mkdir -p /etc/network/interfaces.d
+
+    # Add ignore block if missing
+    if ! grep -q '^interface "usb0" {' "$DHCLIENT_CONF"; then
+        log "Adding usb0 ignore block to $DHCLIENT_CONF"
+        echo -e '\ninterface "usb0" {\n    ignore;\n}' | sudo tee -a "$DHCLIENT_CONF" >/dev/null
+    else
+        log "usb0 ignore block already present in $DHCLIENT_CONF"
+    fi
+
+    # Create static IP config
+    cat > "$STATIC_CONF_FILE" <<EOF
+auto lo
+iface lo inet loopback
+
+auto usb0
+iface usb0 inet static
+    address $USB0_ADDRESS
+    netmask 255.255.255.0
+    gateway 192.168.225.1
+    dns-nameservers 8.8.8.8 8.8.4.4
+    metric 100
+EOF
+
+    log "Static IP config for usb0 created at $STATIC_CONF_FILE"
+
+    # Remove any old DHCP leases
+    if [ -f /var/lib/dhcp/dhclient.leases ]; then
+        log "Removing existing DHCP leases"
+        sudo rm -f /var/lib/dhcp/dhclient.leases
+    fi
+
+    sudo systemctl restart networking
+}
+
+unset_static_ip() {
+    sudo sed -i '/^interface "usb0" {/,/^}$/d' "$DHCLIENT_CONF"
+    sudo rm -f "$STATIC_CONF_FILE"
+    sudo systemctl restart networking
 }
 
