@@ -19,6 +19,15 @@ init_state
 set_boot_state 1
 log "$script_name - BOOT_STATE=$(get_boot_state)"
 
+# This will set or unset static IP for the dongle. Enable/disable from the config vars in common.sh
+if [ "$STATIC_IP" = "1" ]; then
+    log "Enabling static IP on usb0"
+    set_static_ip
+else
+    log "Disabling static IP on usb0"
+    unset_static_ip
+fi
+
 # Set DNS servers (the dongle sim7600g-h wasn't resolving addresses with the nameservers assigned by network manager)
 sudo chattr -i /etc/resolv.conf
 echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf
