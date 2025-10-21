@@ -10,7 +10,7 @@
 # Step 2: Enter your Gmail address in the 'from' and 'user' fields below.
 # For the 'password' field, use the app password you just generated (not your main Gmail password).
 
-# Step 3: Save this file as ~/.msmtprc
+# Step 3: Save this file as ~/.msmtprc (from project folder sudo mv msmtprc___o.txt ~/.msmtprc)
 # (Note: ~ means your home directory, and the dot makes it a hidden file.)
 # Then, secure the file so only you can read it:
 # Run: chmod 600 ~/.msmtprc
