@@ -82,18 +82,22 @@ This code turns a Raspberry Pi into an online audio streamer. Some of its featur
    ```
    alsamixer
    ```
-   To see the fader, click on "F6: Select your soundcard", and then show all volume controls with "F5: All".
-5. Configure settings:
+   To see the fader, click on "F6: Select your soundcard", and then show all volume controls with "F5: All". <br>
+   If you want to repeat the test and observe the signal levels, run:
+   ```
+   arecord -d 10 -D mic_out_shared -c 2 -r 44100 -f S16_LE -t wav -V stereo -v mic-test.wav
+   ```
+6. Configure settings:
    * Edit all remaining files ending in "___o" with your settings (settings are commented inside each file).
    * Save them without "___o" (e.g., edit `common___o.sh` and save as `common.sh`).
    * **Note**: You can keep the originals, only those without `"___o"` will be used.
-6. Test the stream:
+7. Test the stream:
    ```
    ./stream.sh
    ```
    * If set up correctly, you should be able to access the stream via your Icecast2 server address.
    * **Note**: This assumes that `darkice.cfg` has been set up correctly, there are no errors in the terminal, and the last line ends with `SCHED_FIFO`.
-7. Enable email operations:
+8. Enable email operations:
    * Obtain an App Password from your email account (we used Gmail).
    * Update the 'from', 'user', and 'password' fields with your own credentials.
    * Save this file as a hidden configuration in your home folder and set the appropriate permissions.
@@ -102,13 +106,13 @@ This code turns a Raspberry Pi into an online audio streamer. Some of its featur
    chmod 600 ~/.msmtprc
    ```
    * Enable IMAP on your email account to allow the Raspberry Pi to download attachments from your emails and receive remote updates.
-8. Set up cronjobs:
+9. Set up cronjobs:
    * Open the crontab editor 
    ```
    crontab -e
    ```
    * Copy the entire content of crontab.txt, paste it into the editor, and save.
-9. Create boot service:
+10. Create boot service:
    * Open boot.service.txt
    ```
    sudo nano boot.service.txt
@@ -128,7 +132,7 @@ This code turns a Raspberry Pi into an online audio streamer. Some of its featur
    ```
    sudo systemctl status boot.service
    ```
-10. ENJOY!
+11. ENJOY!
 
 ## Troubleshooting
 
@@ -187,3 +191,4 @@ Developed the Raspberry Pi online audio streamer project.
 * **Acknowledgements**:
   - [LocuSonus Project](https://locusonus.org)
   - [Alice Eldridge](https://profiles.sussex.ac.uk/p127749-alice-eldridge)
+
