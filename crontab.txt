@@ -14,7 +14,7 @@ MAILTO=""
 # Health check every hour. Append states on uptime.log
 30 * * * * $HOME/audio-streamer/monitor.sh
 
-# Write on the log the measurment from the battery sensor. 
+# Write on the log the measurement from the battery sensor. 
 15,45 * * * * $HOME/audio-streamer/venv/bin/python $HOME/audio-streamer/battery.py
 
 # At 9PM: send the log file and limit the lines to the last 50000.
