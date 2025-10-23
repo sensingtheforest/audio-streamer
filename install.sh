@@ -158,6 +158,14 @@ pip install adafruit-circuitpython-ads1x15
 if [ $MEMS -eq 1 ]; then
 	echo ""
 	echo "INSTALL RASPBERRYPI-KERNEL-HEADERS"
-	sudo apt install raspberrypi-kernel-headers
+	if grep -q "Raspberry Pi" /etc/os-release || grep -q "raspberrypi" /etc/issue; then
+		echo "Raspberry Pi OS detected."
+		echo "Installing raspberrypi-kernel-headers..."
+		sudo apt install -y raspberrypi-kernel-headers
+	else
+		echo "Debian or other Linux detected."
+		echo "Installing linux-headers for current kernel..."
+		sudo apt install -y linux-headers-$(uname -r)
+	fi
 	read -p "Kernel headers need reboot before installing mems drivers. Reboot now? (y/n): " choice && [[ $choice == [Yy] ]] && sudo reboot
 fi
