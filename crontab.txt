@@ -1,6 +1,6 @@
 # These are the cron jobs we use to keep the streamer happy and a bit more.
 # Run "crontab -e" from the terminal and copy these lines. 
-# If you're not using the battery sensor or email logging, feel free to remove those specific jobs.
+# If you're not using the battery sensor or email logging, you can remove those specific cronjobs.
 
 # The environment for cron jobs is more limited than your normal shell environment.
 # Setting the PATH variable here ensures proper path resolution for all cron-executed commands and scripts.
