@@ -87,6 +87,7 @@ sleep 30
 
 $PROJECT_FOLDER/send-email.sh
 
+# For this, you need to uncomment the alsa code at the end of /etc/asound.config
 # Low latency headphones output from soundcard. Unlike the streaming, this has low latency.
 # This parameters are for AI Micro. For other device, adjust the format (-f S24_3LE)
 if [[ "$HEADPHONES" -eq 1 ]]; then
