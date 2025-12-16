@@ -76,6 +76,7 @@ DONGLEMODE_WIFI_WINDOW=600
 GREEDYWIFIMODE_INTERVAL=10
 
 # If you have a usb audio device, this activates the headphones, low latency output. (Tested with AI Micro)
+# For this, you need to uncomment the alsa code at the end of /etc/asound.config
 HEADPHONES=0
 
 #------------------------------------------------
