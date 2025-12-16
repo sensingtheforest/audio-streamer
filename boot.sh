@@ -87,5 +87,17 @@ sleep 30
 
 $PROJECT_FOLDER/send-email.sh
 
+# Low latency headphone output from soundcard 
+# This is for AI Micro, for other device, adjust the format (-f S24_3LE)
+if [[ "$HEADPHONES" -eq 1 ]]; then
+	sleep 5
+	screen -S headphones -dm bash -c "
+	sudo arecord -D mic_out_capture -f S24_3LE -r 48000 -c 2 \
+  	--buffer-size=1024 --period-size=256 | \
+	aplay -D mic_monitor -f S24_3LE -r 48000 -c 2 \
+  	--buffer-size=1024 --period-size=256
+	"
+fi
+
 set_boot_state 0
 log "$script_name - BOOT_STATE=$(get_boot_state)"
