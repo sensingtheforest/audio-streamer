@@ -75,6 +75,9 @@ DONGLEMODE_WIFI_WINDOW=600
 # If there is, it connects to the wifi and restarts darkice. 
 GREEDYWIFIMODE_INTERVAL=10
 
+# If you have a usb audio device, this activates the headphones, low latency output. (Tested with AI Micro)
+HEADPHONES=0
+
 #------------------------------------------------
 
 
