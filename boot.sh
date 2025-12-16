@@ -87,8 +87,8 @@ sleep 30
 
 $PROJECT_FOLDER/send-email.sh
 
-# Low latency headphone output from soundcard 
-# This is for AI Micro, for other device, adjust the format (-f S24_3LE)
+# Low latency headphones output from soundcard. Unlike the streaming, this has low latency.
+# This parameters are for AI Micro. For other device, adjust the format (-f S24_3LE)
 if [[ "$HEADPHONES" -eq 1 ]]; then
 	sleep 5
 	screen -S headphones -dm bash -c "
